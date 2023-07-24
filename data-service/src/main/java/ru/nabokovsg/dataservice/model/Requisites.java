@@ -18,6 +18,9 @@ public class Requisites {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "address_id", referencedColumnName = "id")
+    private Address address;
     @Column(name = "index")
     private Integer index;
     @Column(name = "phone")
@@ -31,6 +34,7 @@ public class Requisites {
     public String toString() {
         return "Requisites{" +
                 "id=" + id +
+                ", address=" + address +
                 ", index=" + index +
                 ", phone='" + phone + '\'' +
                 ", fax='" + fax + '\'' +
