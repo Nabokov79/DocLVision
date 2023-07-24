@@ -5,7 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import ru.nabokovsg.dataservice.dto.address.AddressDto;
+import ru.nabokovsg.dataservice.dto.requisites.RequisitesDto;
 
 @Setter
 @Getter
@@ -22,6 +22,6 @@ public class ShortDepartmentDto {
     private String shortNameDepartment;
     @Schema(description = "Номер подразделения филиала организации")
     private Integer departmentNumber;
-    @Schema(description = "Адрес подразделения филиала организации")
-    private AddressDto address;
+    @Schema(description = "Реквизиты")
+    private RequisitesDto requisites;
 }

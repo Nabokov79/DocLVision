@@ -5,7 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import ru.nabokovsg.dataservice.dto.address.AddressDto;
+import ru.nabokovsg.dataservice.dto.requisites.RequisitesDto;
 
 @Setter
 @Getter
@@ -20,6 +20,6 @@ public class ShortBranchDto {
     private String branch;
     @Schema(description = "краткое название филиала организации")
     private String shortNameBranch;
-    @Schema(description = "Адрес филиала организации")
-    private AddressDto address;
+    @Schema(description = "Реквизиты")
+    private RequisitesDto requisites;
 }
