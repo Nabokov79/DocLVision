@@ -24,9 +24,6 @@ public class Organization {
     private String organization;
     @Column(name = "short_name_organization")
     private String shortNameOrganization;
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "address_id", referencedColumnName = "id")
-    private Address address;
     @OneToMany(mappedBy = "organization",
             orphanRemoval = true,
             cascade = CascadeType.REMOVE,
@@ -42,7 +39,6 @@ public class Organization {
                 "id=" + id +
                 ", organization='" + organization + '\'' +
                 ", shortNameOrganization='" + shortNameOrganization + '\'' +
-                ", address=" + address +
                 ", branches=" + branches +
                 ", requisites=" + requisites +
                 '}';

@@ -25,9 +25,6 @@ public class Department {
     private String shortNameDepartment;
     @Column(name = "department_number")
     private Integer departmentNumber;
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "address_id", referencedColumnName = "id")
-    private Address address;
     @OneToMany(mappedBy = "department",
             orphanRemoval = true,
             cascade = CascadeType.REMOVE,
@@ -47,7 +44,6 @@ public class Department {
                 ", department='" + department + '\'' +
                 ", shortNameDepartment='" + shortNameDepartment + '\'' +
                 ", departmentNumber=" + departmentNumber +
-                ", address=" + address +
                 ", buildings=" + buildings +
                 ", requisites=" + requisites +
                 ", branch=" + branch +
