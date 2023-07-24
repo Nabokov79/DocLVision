@@ -22,11 +22,12 @@ public class BuildingServiceImpl implements BuildingService {
     private final AddressService addressService;
     private final DepartmentService departmentService;
     private final DepartmentMapper departmentMapper;
+    private final RequisitesService requisitesService;
 
     @Override
     public BuildingDto save(NewBuildingDto buildingDto) {
         Building building = mapper.mapToNewBuilding(buildingDto);
-        building.setAddress(addressService.get(buildingDto.getAddressId()));
+        building.setRequisites(requisitesService.save(buildingDto.getRequisites()));
         building.setDepartment(
                                 departmentMapper.mapToDepartment(departmentService.get(buildingDto.getDepartmentId())));
         return mapper.mapToBuildingDto(repository.save(building));
@@ -36,7 +37,7 @@ public class BuildingServiceImpl implements BuildingService {
     public BuildingDto update(UpdateBuildingDto buildingDto) {
         if (repository.existsById(buildingDto.getId())) {
             Building building = mapper.mapToUpdateBuilding(buildingDto);
-            building.setAddress(addressService.get(buildingDto.getAddressId()));
+            building.setRequisites(requisitesService.update(buildingDto.getRequisites()));
             building.setDepartment(
                                 departmentMapper.mapToDepartment(departmentService.get(buildingDto.getDepartmentId())));
             return mapper.mapToBuildingDto(repository.save(building));
