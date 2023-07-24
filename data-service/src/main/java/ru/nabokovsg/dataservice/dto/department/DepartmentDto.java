@@ -4,7 +4,6 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
-import ru.nabokovsg.dataservice.dto.address.AddressDto;
 import ru.nabokovsg.dataservice.dto.branch.BranchDto;
 import ru.nabokovsg.dataservice.dto.requisites.RequisitesDto;
 import javax.validation.constraints.NotNull;
@@ -24,8 +23,6 @@ public class DepartmentDto {
     private String shortNameDepartment;
     @Schema(description = "Номер подразделения филиала организации")
     private Integer departmentNumber;
-    @Schema(description = "Адрес подразделения филиала организации")
-    private AddressDto address;
     @Schema(description = "Реквизиты подразделения филиала организации")
     private RequisitesDto requisites;
     @Schema(description = "Филиал организации")
