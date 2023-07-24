@@ -20,7 +20,6 @@ public class DepartmentServiceImpl implements DepartmentService {
 
     private final DepartmentRepository repository;
     private final DepartmentMapper mapper;
-    private final AddressService addressService;
     private final RequisitesService requisitesService;
     private final BranchService branchService;
     private final BranchMapper branchMapper;
@@ -28,10 +27,7 @@ public class DepartmentServiceImpl implements DepartmentService {
     @Override
     public DepartmentDto save(NewDepartmentDto departmentDto) {
         Department department = mapper.mapToNewDepartment(departmentDto);
-        department.setAddress(addressService.get(departmentDto.getAddressId()));
-        if (departmentDto.getRequisites() != null) {
-            department.setRequisites(requisitesService.save(departmentDto.getRequisites()));
-        }
+        department.setRequisites(requisitesService.save(departmentDto.getRequisites()));
         department.setBranch(branchMapper.mapToBranch(branchService.get(departmentDto.getBranchId())));
         return mapper.mapToDepartmentDto(repository.save(department));
     }
@@ -39,10 +35,7 @@ public class DepartmentServiceImpl implements DepartmentService {
     @Override
     public DepartmentDto update(UpdateDepartmentDto departmentDto) {
         Department department = mapper.mapToUpdateDepartment(departmentDto);
-        department.setAddress(addressService.get(departmentDto.getAddressId()));
-        if (departmentDto.getRequisites() != null) {
-            department.setRequisites(requisitesService.update(departmentDto.getRequisites()));
-        }
+        department.setRequisites(requisitesService.update(departmentDto.getRequisites()));
         department.setBranch(branchMapper.mapToBranch(branchService.get(departmentDto.getBranchId())));
         return mapper.mapToDepartmentDto(repository.save(department));
     }

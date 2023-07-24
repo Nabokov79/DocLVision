@@ -20,7 +20,6 @@ public class OrganizationServiceImpl implements OrganizationService {
     private final OrganizationRepository repository;
     private final OrganizationMapper mapper;
     private final RequisitesService requisitesService;
-    private final AddressService addressService;
 
     @Override
     public OrganizationDto save(NewOrganizationDto organizationDto) {
@@ -30,10 +29,7 @@ public class OrganizationServiceImpl implements OrganizationService {
             );
         }
         Organization organization = mapper.mapToNewOrganization(organizationDto);
-        organization.setAddress(addressService.get(organizationDto.getAddressId()));
-        if (organizationDto.getRequisites() != null) {
-            organization.setRequisites(requisitesService.save(organizationDto.getRequisites()));
-        }
+        organization.setRequisites(requisitesService.save(organizationDto.getRequisites()));
         return mapper.mapToOrganizationDto(repository.save(organization));
     }
 
@@ -41,10 +37,7 @@ public class OrganizationServiceImpl implements OrganizationService {
     public OrganizationDto update(UpdateOrganizationDto organizationDto) {
         if (repository.existsById(organizationDto.getId())) {
             Organization organization = mapper.mapToUpdateOrganization(organizationDto);
-            organization.setAddress(addressService.get(organizationDto.getAddressId()));
-            if (organizationDto.getRequisites() != null) {
-                organization.setRequisites(requisitesService.update(organizationDto.getRequisites()));
-            }
+            organization.setRequisites(requisitesService.update(organizationDto.getRequisites()));
             return mapper.mapToOrganizationDto(repository.save(mapper.mapToUpdateOrganization(organizationDto)));
         }
         throw new NotFoundException(

@@ -15,17 +15,21 @@ public class RequisitesServiceImpl implements RequisitesService {
 
     private final RequisitesRepository repository;
     private final RequisitesMapper mapper;
+    private final AddressService addressService;
 
     @Override
     public Requisites save(NewRequisitesDto requisitesDto) {
-        return repository.save(mapper.mapToNewRequisites(requisitesDto));
+        Requisites requisites = mapper.mapToNewRequisites(requisitesDto);
+        requisites.setAddress(addressService.get(requisitesDto.getAddressId()));
+        return repository.save(requisites);
     }
 
     @Override
     public Requisites update(UpdateRequisitesDto requisitesDto) {
         if (repository.existsById(requisitesDto.getId())) {
-            return repository.save(mapper.mapToUpdateRequisites(requisitesDto));
-
+            Requisites requisites = mapper.mapToUpdateRequisites(requisitesDto);
+            requisites.setAddress(addressService.get(requisitesDto.getAddressId()));
+            return repository.save(requisites);
         }
         throw new NotFoundException(String.format("Requisites with id=%s not found for update", requisitesDto.getId()));
     }

@@ -21,7 +21,6 @@ public class BranchServiceImpl implements BranchService {
 
     private final BranchRepository repository;
     private final BranchMapper mapper;
-    private final AddressService addressService;
     private final OrganizationService organizationService;
     private final OrganizationMapper organizationMapper;
     private final RequisitesService requisitesService;
@@ -29,10 +28,7 @@ public class BranchServiceImpl implements BranchService {
     @Override
     public BranchDto save(NewBranchDto branchDto) {
         Branch branch = mapper.mapToNewBranch(branchDto);
-        branch.setAddress(addressService.get(branchDto.getAddressId()));
-        if (branchDto.getRequisites() != null) {
-            branch.setRequisites(requisitesService.save(branchDto.getRequisites()));
-        }
+        branch.setRequisites(requisitesService.save(branchDto.getRequisites()));
         branch.setOrganization(
                 organizationMapper.mapToOrganization(organizationService.get(branchDto.getOrganizationId())));
         return mapper.mapToBranchDto(repository.save(branch));
@@ -42,10 +38,7 @@ public class BranchServiceImpl implements BranchService {
     public BranchDto update(UpdateBranchDto branchDto) {
         if (repository.existsById(branchDto.getId())) {
             Branch branch = mapper.mapToUpdateBranch(branchDto);
-            branch.setAddress(addressService.get(branchDto.getAddressId()));
-            if (branchDto.getRequisites() != null) {
-                branch.setRequisites(requisitesService.update(branchDto.getRequisites()));
-            }
+            branch.setRequisites(requisitesService.update(branchDto.getRequisites()));
             branch.setOrganization(
                     organizationMapper.mapToOrganization(organizationService.get(branchDto.getOrganizationId())));
             return mapper.mapToBranchDto(repository.save(branch));
