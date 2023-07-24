@@ -26,10 +26,6 @@ public class UpdateOrganizationDto {
     @Schema(description = "Краткое наименование организации")
     @NotBlank(message = "short name organization should not be blank")
     private String shortNameOrganization;
-    @Schema(description = "Индентификатор адреса организации")
-    @NotNull(message = "id organization's address must not be null")
-    @Positive(message = "id organization's address must be negative")
-    private Long addressId;
     @Schema(description = "Реквизиты организации")
     private UpdateRequisitesDto requisites;
 }

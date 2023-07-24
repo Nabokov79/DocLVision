@@ -26,10 +26,6 @@ public class UpdateBranchDto {
     @Schema(description = "краткое название филиала организации")
     @NotBlank(message = "short name branch organization should not be blank")
     private String shortNameBranch;
-    @Schema(description = "Индентификатор адреса")
-    @NotNull(message = "address id should not be blank")
-    @Positive(message = "address id must be positive")
-    private Long addressId;
     @Schema(description = "Реквизиты филиала организации")
     private UpdateRequisitesDto requisites;
     @Schema(description = "Индентификатор организации")

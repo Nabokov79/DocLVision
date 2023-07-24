@@ -18,6 +18,10 @@ import javax.validation.constraints.Positive;
 @Schema(description = "Данные новых реквизитов")
 public class NewRequisitesDto {
 
+    @Schema(description = "Индентификатор адреса")
+    @NotNull(message = "id organization's address must not be null")
+    @Positive(message = "id organization's address must be negative")
+    private Long addressId;
     @Schema(description = "Почтовый индекс")
     @NotNull(message = "index should not be blank")
     @Positive(message = "index must be positive")

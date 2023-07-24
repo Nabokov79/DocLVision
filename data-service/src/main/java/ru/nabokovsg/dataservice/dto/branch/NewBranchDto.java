@@ -6,7 +6,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import ru.nabokovsg.dataservice.dto.requisites.NewRequisitesDto;
-
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
@@ -24,10 +23,6 @@ public class NewBranchDto {
     @Schema(description = "Краткое название филиала организации")
     @NotBlank(message = "short name branch organization should not be blank")
     private String shortNameBranch;
-    @Schema(description = "Индентификатор адреса")
-    @NotNull(message = "address id should not be blank")
-    @Positive(message = "address id must be positive")
-    private Long addressId;
     @Schema(description = "Реквизиты филиала организации")
     private NewRequisitesDto requisites;
     @Schema(description = "Индентификатор организации")

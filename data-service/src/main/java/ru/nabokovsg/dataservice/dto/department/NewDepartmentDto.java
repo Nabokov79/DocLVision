@@ -24,10 +24,6 @@ public class NewDepartmentDto {
     private String shortNameDepartment;
     @Schema(description = "Номер подразделения филиала организации")
     private Integer departmentNumber;
-    @Schema(description = "Индентификатор адреса")
-    @NotNull(message = "address id should not be blank")
-    @Positive(message = "address id must be positive")
-    private Long addressId;
     @Schema(description = "Реквизиты подразделения филиала организации")
     private NewRequisitesDto requisites;
     @Schema(description = "Индентификатор филиала организации")

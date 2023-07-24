@@ -6,10 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import ru.nabokovsg.dataservice.dto.requisites.NewRequisitesDto;
-
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Positive;
 
 @Setter
 @Getter
@@ -24,10 +21,6 @@ public class NewOrganizationDto {
     @Schema(description = "Краткое наименование организации")
     @NotBlank(message = "short name organization should not be blank")
     private String shortNameOrganization;
-    @Schema(description = "Индентификатор адреса организации")
-    @NotNull(message = "id organization's address must not be null")
-    @Positive(message = "id organization's address must be negative")
-    private Long addressId;
     @Schema(description = "Реквизиты организации")
     private NewRequisitesDto requisites;
 }
