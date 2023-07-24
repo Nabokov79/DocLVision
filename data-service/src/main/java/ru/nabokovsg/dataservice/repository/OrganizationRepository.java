@@ -9,6 +9,6 @@ public interface OrganizationRepository extends JpaRepository<Organization, Long
 
     boolean existsByOrganization(String organization);
 
-    @Query("select o.organization, o.shortNameOrganization, o.address from Organization o")
+    @Query("select o.organization, o.shortNameOrganization from Organization o")
     Set<Organization> findAllOrganization();
 }
