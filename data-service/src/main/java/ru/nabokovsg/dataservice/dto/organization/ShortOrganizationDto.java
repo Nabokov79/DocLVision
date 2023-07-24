@@ -4,7 +4,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
-import ru.nabokovsg.dataservice.dto.address.AddressDto;
+import ru.nabokovsg.dataservice.dto.requisites.RequisitesDto;
 
 @Setter
 @Getter
@@ -18,6 +18,6 @@ public class ShortOrganizationDto {
     private String organization;
     @Schema(description = "Краткое наименование организации")
     private String shortNameOrganization;
-    @Schema(description = "Адрес организации")
-    private AddressDto address;
+    @Schema(description = "Реквизиты")
+    private RequisitesDto requisitesDto;
 }
