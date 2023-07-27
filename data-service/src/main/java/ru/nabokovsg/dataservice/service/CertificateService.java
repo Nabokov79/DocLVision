@@ -9,9 +9,9 @@ import java.util.List;
 
 public interface CertificateService {
 
-    List<CertificateDto> save(List<NewCertificateDto> newCertificates);
+    List<CertificateDto> save(List<NewCertificateDto> certificatesDto);
 
-    List<CertificateDto> update(List<UpdateCertificateDto> updateCertificates);
+    List<CertificateDto> update(List<UpdateCertificateDto> certificatesDto);
 
     List<CertificateDto> getAll(Long employeeId, LocalDate date);
 

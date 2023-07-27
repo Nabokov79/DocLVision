@@ -12,10 +12,6 @@ import ru.nabokovsg.dataservice.exceptions.NotFoundException;
 import ru.nabokovsg.dataservice.mapper.CertificateMapper;
 import ru.nabokovsg.dataservice.model.*;
 import ru.nabokovsg.dataservice.repository.CertificateRepository;
-import ru.nabokovsg.dataservice.repository.ControlTypeRepository;
-import ru.nabokovsg.dataservice.repository.EmployeeRepository;
-import ru.nabokovsg.dataservice.repository.OrganizationRepository;
-
 import javax.persistence.EntityManager;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -28,28 +24,86 @@ import java.util.stream.Collectors;
 public class CertificateServiceImpl implements CertificateService {
 
     private final CertificateRepository repository;
-    private final OrganizationRepository organizationRepository;
-    private final ControlTypeRepository controlTypeRepository;
-    private final EmployeeRepository employeeRepository;
     private final CertificateMapper mapper;
+
+    private final OrganizationService organizationService;
+    private final EmployeeService employeeService;
+    private final ControlTypeService controlTypeService;
     private final EntityManager entityManager;
 
     @Override
-    public List<CertificateDto> save(List<NewCertificateDto> newCertificates) {
-        if (newCertificates.isEmpty()) {
+    public List<CertificateDto> save(List<NewCertificateDto> certificatesDto) {
+        if (certificatesDto.isEmpty()) {
             throw new NotFoundException("new certificates not found for save");
         }
-        List<Certificate> certificatesDb = setCertificatesValue(newCertificates, null);
-        return mapper.mapToCertificatesDto(repository.saveAll(certificatesDb));
+        Map<Long, Organization> organizations = organizationService.getAllByIds(certificatesDto
+                                                                        .stream()
+                                                                        .map(NewCertificateDto::getOrganizationId)
+                                                                        .distinct()
+                                                                        .toList())
+                                                                .stream()
+                                                                .collect(Collectors.toMap(Organization::getId, o -> o));
+        Map<Long, Employee> employees = employeeService.getAllByIds(certificatesDto
+                                                                            .stream()
+                                                                            .map(NewCertificateDto::getEmployeeId)
+                                                                            .distinct()
+                                                                            .toList())
+                                                                    .stream()
+                                                                    .collect(Collectors.toMap(Employee::getId, e -> e));
+        Map<Long, ControlType> controlTypes = controlTypeService.getAllByIds(certificatesDto
+                                                                        .stream()
+                                                                        .map(NewCertificateDto::getControlTypeId)
+                                                                        .distinct()
+                                                                        .toList())
+                                                                .stream()
+                                                                .collect(Collectors.toMap(ControlType::getId, c -> c));
+        List<Certificate> certificates = new ArrayList<>();
+        for (NewCertificateDto certificateDto : certificatesDto) {
+            Certificate certificate = mapper.mapToNewCertificate(certificateDto);
+            certificate.setControlType(controlTypes.get(certificateDto.getControlTypeId()));
+            certificate.setOrganization(organizations.get(certificateDto.getOrganizationId()));
+            certificate.setEmployee(employees.get(certificateDto.getEmployeeId()));
+            certificates.add(certificate);
+        }
+        return mapper.mapToCertificatesDto(repository.saveAll(certificates));
     }
 
     @Override
-    public List<CertificateDto> update(List<UpdateCertificateDto> updateCertificates) {
-        if (updateCertificates.isEmpty()) {
+    public List<CertificateDto> update(List<UpdateCertificateDto> certificatesDto) {
+        if (certificatesDto.isEmpty()) {
             throw new NotFoundException("certificates not found for update");
         }
-        List<Certificate> certificatesDb = setCertificatesValue(null, updateCertificates);
-        return mapper.mapToCertificatesDto(repository.saveAll(certificatesDb));
+        validateIds(certificatesDto.stream().map(UpdateCertificateDto::getId).toList());
+        Map<Long, Organization> organizations = organizationService.getAllByIds(certificatesDto
+                                                                        .stream()
+                                                                        .map(UpdateCertificateDto::getOrganizationId)
+                                                                        .distinct()
+                                                                        .toList())
+                                                                .stream()
+                                                                .collect(Collectors.toMap(Organization::getId, o -> o));
+        Map<Long, Employee> employees = employeeService.getAllByIds(certificatesDto
+                                                                            .stream()
+                                                                            .map(UpdateCertificateDto::getEmployeeId)
+                                                                            .distinct()
+                                                                            .toList())
+                                                                    .stream()
+                                                                    .collect(Collectors.toMap(Employee::getId, e -> e));
+        Map<Long, ControlType> controlTypes = controlTypeService.getAllByIds(certificatesDto
+                                                                        .stream()
+                                                                        .map(UpdateCertificateDto::getControlTypeId)
+                                                                        .distinct()
+                                                                        .toList())
+                                                                .stream()
+                                                                .collect(Collectors.toMap(ControlType::getId, c -> c));
+        List<Certificate> certificates = new ArrayList<>();
+        for (UpdateCertificateDto certificateDto : certificatesDto) {
+            Certificate certificate = mapper.mapToUpdateCertificate(certificateDto);
+            certificate.setControlType(controlTypes.get(certificateDto.getControlTypeId()));
+            certificate.setOrganization(organizations.get(certificateDto.getOrganizationId()));
+            certificate.setEmployee(employees.get(certificateDto.getEmployeeId()));
+            certificates.add(certificate);
+        }
+        return mapper.mapToCertificatesDto(repository.saveAll(certificates));
     }
 
     @Override
@@ -78,32 +132,13 @@ public class CertificateServiceImpl implements CertificateService {
         throw new NotFoundException(String.format("certificate with id = %s not found for delete", id));
     }
 
-    public List<Certificate> setCertificatesValue(List<NewCertificateDto> newCertificates,
-                                                  List<UpdateCertificateDto> updateCertificates) {
-        List<Certificate> certificates = new ArrayList<>();
-        Map<Long, ControlType> typeControls = controlTypeRepository.findAll().stream()
-                                             .collect(Collectors.toMap(ControlType::getId, controlType -> controlType));
-        Map<Long, Organization> organizations = organizationRepository.findAll().stream()
-                                          .collect(Collectors.toMap(Organization::getId, organization -> organization));
-        Map<Long, Employee> users = employeeRepository.findAll().stream().collect(Collectors.toMap(Employee::getId, user -> user));
-        if (newCertificates != null) {
-            for (NewCertificateDto certificateDto : newCertificates) {
-                Certificate certificate = mapper.mapToCertificate(certificateDto);
-                certificate.setControlType(typeControls.get(certificateDto.getControlTypeId()));
-                certificate.setOrganization(organizations.get(certificateDto.getOrganizationId()));
-                certificate.setEmployee(users.get(certificateDto.getUserId()));
-                certificates.add(certificate);
-            }
+    private void validateIds(List<Long> ids) {
+        Map<Long, Certificate> certificates = repository.findAllById((ids))
+                .stream().collect(Collectors.toMap(Certificate::getId, subheading -> subheading));
+        if (certificates.size() != ids.size() || certificates.isEmpty()) {
+            List<Long> idsDb = new ArrayList<>(certificates.keySet());
+            ids = ids.stream().filter(e -> !idsDb.contains(e)).collect(Collectors.toList());
+            throw new NotFoundException(String.format("certificates with ids= %s not found", ids));
         }
-        if (updateCertificates != null) {
-            for (UpdateCertificateDto certificateDto : updateCertificates) {
-                Certificate certificate = mapper.mapToUpdateCertificate(certificateDto);
-                certificate.setControlType(typeControls.get(certificateDto.getControlTypeId()));
-                certificate.setOrganization(organizations.get(certificateDto.getOrganizationId()));
-                certificate.setEmployee(users.get(certificateDto.getUserId()));
-                certificates.add(certificate);
-            }
-        }
-        return certificates;
     }
 }

@@ -31,26 +31,26 @@ public class CertificateController {
 
     @Operation(summary = "Добавление данных сертификатов сотрудника")
     @PostMapping
-    public ResponseEntity<List<CertificateDto>> save(@RequestBody
-                                                     @Parameter(description = "Список сертификатов сотрудника")
-                                                     List<NewCertificateDto> newCertificates) {
-        return ResponseEntity.ok().body(service.save(newCertificates));
+    public ResponseEntity<List<CertificateDto>> save(
+            @RequestBody
+            @Parameter(description = "Список сертификатов сотрудника") List<NewCertificateDto> certificatesDto) {
+        return ResponseEntity.ok().body(service.save(certificatesDto));
     }
 
     @Operation(summary = "Изменение данных аттестации сотрудника")
     @PatchMapping
-    public ResponseEntity<List<CertificateDto>> update(@RequestBody
-                                                       @Parameter(description = "Список сертификатов сотрудника")
-                                                       List<UpdateCertificateDto> updateCertificates) {
-        return ResponseEntity.ok().body(service.update(updateCertificates));
+    public ResponseEntity<List<CertificateDto>> update(
+            @RequestBody
+            @Parameter(description = "Список сертификатов сотрудника") List<UpdateCertificateDto> certificatesDto) {
+        return ResponseEntity.ok().body(service.update(certificatesDto));
     }
 
     @Operation(summary = "Получение данных сертификатов сотрудников")
     @GetMapping
     public ResponseEntity<List<CertificateDto>> getAll(@RequestParam(required = false)
-                                                      @Parameter(description = "Индентификатор сотрудника") Long employeeId,
-                                                      @RequestParam(required = false)
-                                                      @Parameter(description = "Дата") LocalDate date) {
+                                                   @Parameter(description = "Индентификатор сотрудника") Long employeeId,
+                                                   @RequestParam(required = false)
+                                                   @Parameter(description = "Дата") LocalDate date) {
         return ResponseEntity.ok().body(service.getAll(employeeId, date));
     }
 

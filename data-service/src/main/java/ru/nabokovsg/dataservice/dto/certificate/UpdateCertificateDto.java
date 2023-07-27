@@ -46,8 +46,8 @@ public class UpdateCertificateDto {
     @NotNull(message = "organization should not be blank")
     @Positive(message = "organization id must be positive")
     private Long organizationId;
-    @Schema(description = "Индентификатор сотрудника")
-    @NotNull(message = "user id should not be blank")
-    @Positive(message = "user id must be positive")
-    private Long userId;
+    @Schema(description = "Индентификатор сотрудника, которому принадлежит сертификат")
+    @NotNull(message = "employee id should not be blank")
+    @Positive(message = "employee id must be positive")
+    private Long employeeId;
 }

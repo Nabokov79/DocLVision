@@ -13,7 +13,7 @@ public interface CertificateMapper {
 
     List<CertificateDto> mapToCertificatesDto(List<Certificate> certificates);
 
-    Certificate mapToCertificate(NewCertificateDto newCertificateDto);
+    Certificate mapToNewCertificate(NewCertificateDto newCertificateDto);
 
     Certificate mapToUpdateCertificate(UpdateCertificateDto updateCertificateDto);
 }

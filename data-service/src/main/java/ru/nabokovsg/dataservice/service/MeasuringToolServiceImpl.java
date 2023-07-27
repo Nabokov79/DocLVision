@@ -6,11 +6,8 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.nabokovsg.dataservice.dto.measuringTool.*;
-import ru.nabokovsg.dataservice.dto.organization.OrganizationDto;
 import ru.nabokovsg.dataservice.exceptions.NotFoundException;
-import ru.nabokovsg.dataservice.mapper.EmployeeMapper;
 import ru.nabokovsg.dataservice.mapper.MeasuringToolMapper;
-import ru.nabokovsg.dataservice.mapper.OrganizationMapper;
 import ru.nabokovsg.dataservice.model.ControlType;
 import ru.nabokovsg.dataservice.model.Employee;
 import ru.nabokovsg.dataservice.model.MeasuringTool;
@@ -40,18 +37,21 @@ public class MeasuringToolServiceImpl implements MeasuringToolService {
         Map<Long, Organization> organizations = organizationService.getAllByIds(measuringToolsDto
                                                                 .stream()
                                                                 .map(NewMeasuringToolDto::getOrganizationId)
+                                                                .distinct()
                                                                 .toList())
                                                                 .stream()
                                                                 .collect(Collectors.toMap(Organization::getId, o -> o));
         Map<Long, Employee> employees = employeeService.getAllByIds(measuringToolsDto
-                                                            .stream()
-                                                            .map(NewMeasuringToolDto::getEmployeeId)
-                                                            .toList())
-                                                            .stream()
-                                                            .collect(Collectors.toMap(Employee::getId, e -> e));
+                                                                    .stream()
+                                                                    .map(NewMeasuringToolDto::getEmployeeId)
+                                                                    .distinct()
+                                                                    .toList())
+                                                                    .stream()
+                                                                    .collect(Collectors.toMap(Employee::getId, e -> e));
         Map<Long, ControlType> controlTypes = controlTypeService.getAllByIds(measuringToolsDto
                                                                 .stream()
                                                                 .map(NewMeasuringToolDto::getControlTypeId)
+                                                                .distinct()
                                                                 .toList())
                                                                 .stream()
                                                                 .collect(Collectors.toMap(ControlType::getId, c -> c));
@@ -74,18 +74,21 @@ public class MeasuringToolServiceImpl implements MeasuringToolService {
         Map<Long, Organization> organizations = organizationService.getAllByIds(measuringToolsDto
                                                                 .stream()
                                                                 .map(UpdateMeasuringToolDto::getOrganizationId)
+                                                                .distinct()
                                                                 .toList())
                                                                 .stream()
                                                                 .collect(Collectors.toMap(Organization::getId, o -> o));
         Map<Long, Employee> employees = employeeService.getAllByIds(measuringToolsDto
-                                                            .stream()
-                                                            .map(UpdateMeasuringToolDto::getEmployeeId)
-                                                            .toList())
-                                                            .stream()
-                                                            .collect(Collectors.toMap(Employee::getId, e -> e));
+                                                                    .stream()
+                                                                    .map(UpdateMeasuringToolDto::getEmployeeId)
+                                                                    .distinct()
+                                                                    .toList())
+                                                                    .stream()
+                                                                    .collect(Collectors.toMap(Employee::getId, e -> e));
         Map<Long, ControlType> controlTypes = controlTypeService.getAllByIds(measuringToolsDto
                                                                 .stream()
                                                                 .map(UpdateMeasuringToolDto::getControlTypeId)
+                                                                .distinct()
                                                                 .toList())
                                                                 .stream()
                                                                 .collect(Collectors.toMap(ControlType::getId, c -> c));
