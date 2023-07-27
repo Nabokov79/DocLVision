@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.Setter;
 import ru.nabokovsg.dataservice.dto.requisites.NewRequisitesDto;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
 
 @Setter
 @Getter
@@ -27,4 +29,16 @@ public class NewEmployeeDto {
     private String post;
     @Schema(description = "Реквизиты сотрудника")
     private NewRequisitesDto requisites;
+    @Schema(description = "Индентификатор организации")
+    @NotNull(message = "organization id user should not be blank")
+    @Positive(message = "organization id user must be positive")
+    private Long organizationId;
+    @Schema(description = "Индентификатор филиала организации")
+    @NotNull(message = "branch id user should not be blank")
+    @Positive(message = "branch id user must be positive")
+    private Long branchId;
+    @Schema(description = "Индентификатор подразделения филиала организации")
+    @NotNull(message = "department id user should not be blank")
+    @Positive(message = "department id user must be positive")
+    private Long departmentId;
 }
