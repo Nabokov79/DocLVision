@@ -56,7 +56,7 @@ public class MeasuringTool {
     private String note;
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "control_type_id", referencedColumnName = "id")
-    private ControlType type;
+    private ControlType controlType;
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "employee_id",  nullable = false)
     private Employee employee;
