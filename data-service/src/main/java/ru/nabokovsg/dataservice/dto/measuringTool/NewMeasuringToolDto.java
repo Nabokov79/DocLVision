@@ -69,9 +69,9 @@ public class NewMeasuringToolDto {
     @NotBlank(message = "note should not be blank")
     private String note;
     @Schema(description = "Индентификатор вида контроля")
-    @NotNull(message = "type id should not be blank")
-    @Positive(message = "type id must be positive")
-    private Long typeId;
+    @NotNull(message = "control type id should not be blank")
+    @Positive(message = "control type id must be positive")
+    private Long controlTypeId;
     @Schema(description = "Индентификатор сотрудника")
     @Positive(message = "user id must be positive")
     private Long employeeId;
