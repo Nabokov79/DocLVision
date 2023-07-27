@@ -9,6 +9,7 @@ import ru.nabokovsg.dataservice.exceptions.BadRequestException;
 import ru.nabokovsg.dataservice.exceptions.NotFoundException;
 import ru.nabokovsg.dataservice.mapper.ControlTypeMapper;
 import ru.nabokovsg.dataservice.model.ControlType;
+import ru.nabokovsg.dataservice.model.Employee;
 import ru.nabokovsg.dataservice.repository.ControlTypeRepository;
 
 import java.util.List;
@@ -54,6 +55,14 @@ public class ControlTypeServiceImpl implements ControlTypeService {
         return mapper.mapToControlTypesDto(repository.findAll());
     }
 
+    @Override
+    public List<ControlType> getAllByIds(List<Long> ids) {
+        List<ControlType> controlTypes = repository.findAllById(ids);
+        if (controlTypes.isEmpty()) {
+            throw new NotFoundException(String.format("Control type with ids=%s not found", ids));
+        }
+        return controlTypes;
+    }
     @Override
     public void delete(Long id) {
         if (repository.existsById(id)) {

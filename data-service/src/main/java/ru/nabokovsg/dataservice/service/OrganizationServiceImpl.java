@@ -56,6 +56,15 @@ public class OrganizationServiceImpl implements OrganizationService {
     }
 
     @Override
+    public List<Organization> getAllByIds(List<Long> ids) {
+        List<Organization> organizations = repository.findAllById(ids);
+        if (organizations.isEmpty()) {
+            throw new NotFoundException(String.format("Organization with ids=%s not found", ids));
+        }
+        return organizations;
+    }
+
+    @Override
     public void delete(Long id) {
         if (repository.existsById(id)) {
             repository.deleteById(id);

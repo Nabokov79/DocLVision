@@ -4,6 +4,7 @@ import ru.nabokovsg.dataservice.dto.employee.EmployeeDto;
 import ru.nabokovsg.dataservice.dto.employee.ShortEmployeeDto;
 import ru.nabokovsg.dataservice.dto.employee.UpdateEmployeeDto;
 import ru.nabokovsg.dataservice.dto.employee.NewEmployeeDto;
+import ru.nabokovsg.dataservice.model.Employee;
 
 import java.util.List;
 
@@ -16,6 +17,8 @@ public interface EmployeeService {
     EmployeeDto get(Long id);
 
     List<ShortEmployeeDto> getAll();
+
+    List<Employee> getAllByIds(List<Long> ids);
 
     void delete(Long id);
 }
