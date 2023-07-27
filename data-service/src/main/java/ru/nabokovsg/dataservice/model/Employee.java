@@ -29,16 +29,24 @@ public class Employee {
     private String surname;
     @Column(name = "post", nullable = false)
     private String post;
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne
     @JoinColumn(name = "requisites_id", referencedColumnName = "id")
     private Requisites requisites;
+    @OneToOne
+    @JoinColumn(name = "organization_id", referencedColumnName = "id")
+    private Organization organization;
+    @OneToOne
+    @JoinColumn(name = "branch_id", referencedColumnName = "id")
+    private Branch branch;
+    @OneToOne
+    @JoinColumn(name = "department_id", referencedColumnName = "id")
+    private Department department;
     @OneToMany(mappedBy = "employee",
             orphanRemoval = true,
             cascade = CascadeType.REMOVE,
             fetch = FetchType.LAZY)
     @JsonIgnore
     private Set<Certificate> certificate = new HashSet<>();
-
     @OneToMany(mappedBy = "employee", fetch = FetchType.LAZY)
     @JsonIgnore
     private Set<MeasuringTool> measuringTool = new HashSet<>();
