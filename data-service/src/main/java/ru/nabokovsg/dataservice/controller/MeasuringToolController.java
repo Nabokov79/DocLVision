@@ -32,16 +32,18 @@ public class MeasuringToolController {
 
     @Operation(summary = "Добавление данных нового интструмента(прибора)")
     @PostMapping
-    public ResponseEntity<MeasuringToolDto> save(@RequestBody @Parameter(description = "Инструмент(прибор)")
-                                                 NewMeasuringToolDto newMeasuringTool) {
-        return ResponseEntity.ok().body(service.save(newMeasuringTool));
+    public ResponseEntity<List<MeasuringToolDto>> save(
+            @RequestBody
+            @Parameter(description = "Инструмент(прибор)") List<NewMeasuringToolDto> newMeasuringToolsDto) {
+        return ResponseEntity.ok().body(service.save(newMeasuringToolsDto));
     }
 
     @Operation(summary = "Изменение данных инструмента(прибора)")
     @PatchMapping
-    public ResponseEntity<MeasuringToolDto> update(@RequestBody @Parameter(description = "Инструмент(прибор)")
-                                                   UpdateMeasuringToolDto updateMeasuringTool) {
-        return ResponseEntity.ok().body(service.update(updateMeasuringTool));
+    public ResponseEntity<List<MeasuringToolDto>> update(
+            @RequestBody
+            @Parameter(description = "Инструмент(прибор)") List<UpdateMeasuringToolDto> updateMeasuringToolsDto) {
+        return ResponseEntity.ok().body(service.update(updateMeasuringToolsDto));
     }
 
     @Operation(summary = "Получение инструментов(приборов) по заданным параметрам")

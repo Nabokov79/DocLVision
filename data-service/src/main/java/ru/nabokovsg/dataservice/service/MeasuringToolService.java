@@ -9,9 +9,9 @@ import java.util.List;
 
 public interface MeasuringToolService {
 
-    MeasuringToolDto save(NewMeasuringToolDto newMeasuringTool);
+    List<MeasuringToolDto> save(List<NewMeasuringToolDto> newMeasuringToolsDto);
 
-    MeasuringToolDto update(UpdateMeasuringToolDto updateMeasuringTool);
+    List<MeasuringToolDto> update(List<UpdateMeasuringToolDto> updateMeasuringToolsDto);
 
     List<MeasuringToolDto> getAll(RequestParameters parameters);
 
