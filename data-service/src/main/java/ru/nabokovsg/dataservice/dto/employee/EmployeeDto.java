@@ -9,7 +9,8 @@ import ru.nabokovsg.dataservice.dto.certificate.CertificateDto;
 import ru.nabokovsg.dataservice.dto.department.UltraShortDepartmentDto;
 import ru.nabokovsg.dataservice.dto.measuringTool.MeasuringToolDto;
 import ru.nabokovsg.dataservice.dto.organization.UltraShortOrganizationDto;
-import ru.nabokovsg.dataservice.dto.requisites.RequisitesDto;
+import ru.nabokovsg.dataservice.dto.requisites.RequisitesEmployeeDto;
+
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 import java.util.List;
@@ -31,7 +32,7 @@ public class EmployeeDto {
     @Schema(description = "Должность")
     private String post;
     @Schema(description = "Реквизиты филиала организации")
-    private RequisitesDto requisites;
+    private RequisitesEmployeeDto requisites;
     @Schema(description = "Организация")
     @NotNull(message = "organization id user should not be blank")
     @Positive(message = "organization id user must be positive")
