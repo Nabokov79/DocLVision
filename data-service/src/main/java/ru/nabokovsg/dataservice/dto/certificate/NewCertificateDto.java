@@ -16,6 +16,9 @@ import java.time.LocalDate;
 @Schema(description = "Данные нового сертификата сотрудника")
 public class NewCertificateDto {
 
+    @Schema(description = "Тип документа")
+    @NotBlank(message = "document type should not be blank")
+    private String documentType;
     @Schema(description = "Номер сертификата")
     @NotBlank(message = "number should not be blank")
     private String certificateNumber;
@@ -29,10 +32,10 @@ public class NewCertificateDto {
     private Integer level;
     @Schema(description = "Дата выдачи сертификата специализированной организацией")
     @NotNull(message = "start date should not be blank")
-    private LocalDate start;
+    private LocalDate startDate;
     @Schema(description = "Дата окончания действия сертификата")
     @NotNull(message = "end date not be blank")
-    private LocalDate end;
+    private LocalDate endDate;
     @Schema(description = "Шифр объектов, для контроля которых допущен сотрудник согласно данным сертификата")
     @NotBlank(message = "points should not be blank")
     private String points;

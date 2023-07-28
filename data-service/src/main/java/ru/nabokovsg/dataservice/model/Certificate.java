@@ -1,11 +1,13 @@
 package ru.nabokovsg.dataservice.model;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import java.time.LocalDate;
 
 @Setter
@@ -19,6 +21,8 @@ public class Certificate {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+    @Column(name = "document_type")
+    private String documentType;
     @Column(name = "certificate_number")
     private String certificateNumber;
     @ManyToOne(cascade = CascadeType.ALL)
@@ -27,9 +31,9 @@ public class Certificate {
     @Column(name = "level")
     private Integer level;
     @Column(name = "start_date")
-    private LocalDate start;
+    private LocalDate startDate;
     @Column(name = "end_date")
-    private LocalDate end;
+    private LocalDate endDate;
     @Column(name = "points")
     private String points;
     @ManyToOne(cascade = CascadeType.ALL)
