@@ -23,7 +23,7 @@ public class MeasuringToolDto {
     @Schema(description = "Модель")
     private String model;
     @Schema(description = "Заводской номер")
-    private Integer workNumber;
+    private String workNumber;
     @Schema(description = "Назначение")
     private String purpose;
     @Schema(description = "Дата изготовления")

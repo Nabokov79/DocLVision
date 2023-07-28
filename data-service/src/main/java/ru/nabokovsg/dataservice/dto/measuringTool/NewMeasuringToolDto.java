@@ -25,7 +25,7 @@ public class NewMeasuringToolDto {
     @Schema(description = "Заводской номер")
     @NotNull(message = "work number should not be blank")
     @Positive(message = "work number must be positive")
-    private Integer workNumber;
+    private String workNumber;
     @Schema(description = "Назначение")
     @NotBlank(message = "purpose should not be blank")
     private String purpose;

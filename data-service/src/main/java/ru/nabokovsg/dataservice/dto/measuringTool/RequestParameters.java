@@ -13,7 +13,7 @@ public class RequestParameters {
 
     private String name;
     private String model;
-    private Integer workNumber;
+    private String workNumber;
     private LocalDate manufacturing;
     private LocalDate exploitation;
     private Long manufacturerId;

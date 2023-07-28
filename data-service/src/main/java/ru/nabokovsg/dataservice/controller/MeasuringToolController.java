@@ -51,7 +51,7 @@ public class MeasuringToolController {
     public ResponseEntity<List<MeasuringToolDto>> getAll(
      @RequestParam(required = false) @Parameter(description = "Название") String name,
      @RequestParam(required = false) @Parameter(description = "Модель") String model,
-     @RequestParam(required = false) @Parameter(description = "Заводской номер") Integer workNumber,
+     @RequestParam(required = false) @Parameter(description = "Заводской номер") String workNumber,
      @RequestParam(required = false) @Parameter(description = "Дата изготовления") LocalDate manufacturing,
      @RequestParam(required = false) @Parameter(description = "Дата начала эксплуатации") LocalDate exploitation,
      @RequestParam(required = false)

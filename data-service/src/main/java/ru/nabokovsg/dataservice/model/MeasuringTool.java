@@ -24,7 +24,7 @@ public class MeasuringTool {
     @Column(name = "model")
     private String model;
     @Column(name = "work_number")
-    private Integer workNumber;
+    private String workNumber;
     @Column(name = "purpose")
     private String purpose;
     @Column(name = "manufacturing")
