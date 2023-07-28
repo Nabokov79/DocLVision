@@ -21,8 +21,8 @@ public class UpdateMeasuringToolDto {
     @Positive(message = "id measuring tool must be positive")
     private Long id;
     @Schema(description = "Название")
-    @NotBlank(message = "name should not be blank")
-    private String name;
+    @NotBlank(message = "toll should not be blank")
+    private String toll;
     @Schema(description = "Модель")
     @NotBlank(message = "model should not be blank")
     private String model;

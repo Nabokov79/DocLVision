@@ -19,8 +19,8 @@ public class MeasuringTool {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    @Column(name = "name")
-    private String name;
+    @Column(name = "toll")
+    private String toll;
     @Column(name = "model")
     private String model;
     @Column(name = "work_number")
