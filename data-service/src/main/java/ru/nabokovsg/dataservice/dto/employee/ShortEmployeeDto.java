@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+import ru.nabokovsg.dataservice.dto.requisites.RequisitesEmployeeDto;
 
 @Setter
 @Getter
@@ -21,4 +22,6 @@ public class ShortEmployeeDto {
     private String surname;
     @Schema(description = "Должность")
     private String post;
+    @Schema(description = "Контактные данные сотрудника")
+    private RequisitesEmployeeDto requisites;
 }
