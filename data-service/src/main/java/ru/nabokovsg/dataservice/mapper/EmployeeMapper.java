@@ -17,6 +17,4 @@ public interface EmployeeMapper {
     Employee mapToUpdateEmployee(UpdateEmployeeDto employeeDto);
 
     ShortEmployeeDto mapToEmployeeShortDto(Employee employee);
-
-    Employee mapToEmployee(EmployeeDto employeeDto);
 }
