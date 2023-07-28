@@ -5,13 +5,13 @@ import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import ru.nabokovsg.dataservice.dto.Factory;
+import ru.nabokovsg.dataservice.dto.ObjectsIds;
 import ru.nabokovsg.dataservice.dto.measuringTool.*;
 import ru.nabokovsg.dataservice.exceptions.NotFoundException;
+import ru.nabokovsg.dataservice.mapper.IdsMapper;
 import ru.nabokovsg.dataservice.mapper.MeasuringToolMapper;
-import ru.nabokovsg.dataservice.model.ControlType;
-import ru.nabokovsg.dataservice.model.Employee;
 import ru.nabokovsg.dataservice.model.MeasuringTool;
-import ru.nabokovsg.dataservice.model.Organization;
 import ru.nabokovsg.dataservice.model.QMeasuringTool;
 import ru.nabokovsg.dataservice.repository.MeasuringToolRepository;
 
@@ -28,42 +28,20 @@ public class MeasuringToolServiceImpl implements MeasuringToolService {
     private final MeasuringToolRepository repository;
     private final MeasuringToolMapper mapper;
     private final EntityManager entityManager;
-    private final OrganizationService organizationService;
-    private final EmployeeService employeeService;
-    private final ControlTypeService controlTypeService;
+    private final IdsMapper idsMapper;
+    private final FactoryService factoryService;
 
     @Override
     public List<MeasuringToolDto> save(List<NewMeasuringToolDto> measuringToolsDto) {
-        Map<Long, Organization> organizations = organizationService.getAllByIds(measuringToolsDto
-                                                                .stream()
-                                                                .map(NewMeasuringToolDto::getOrganizationId)
-                                                                .distinct()
-                                                                .toList())
-                                                                .stream()
-                                                                .collect(Collectors.toMap(Organization::getId, o -> o));
-        Map<Long, Employee> employees = employeeService.getAllByIds(measuringToolsDto
-                                                                    .stream()
-                                                                    .map(NewMeasuringToolDto::getEmployeeId)
-                                                                    .distinct()
-                                                                    .toList())
-                                                                    .stream()
-                                                                    .collect(Collectors.toMap(Employee::getId, e -> e));
-        Map<Long, ControlType> controlTypes = controlTypeService.getAllByIds(measuringToolsDto
-                                                                .stream()
-                                                                .map(NewMeasuringToolDto::getControlTypeId)
-                                                                .distinct()
-                                                                .toList())
-                                                                .stream()
-                                                                .collect(Collectors.toMap(ControlType::getId, c -> c));
+        Factory factory = factoryService.create(measuringToolsDto.stream()
+                                                                 .map(idsMapper::mapFromNewMeasuringToolDto)
+                                                                 .toList());
         List<MeasuringTool> measuringTools = new ArrayList<>();
         for (NewMeasuringToolDto measuringToolDto : measuringToolsDto) {
-            MeasuringTool measuringTool = mapper.mapToNewMeasuringTool(measuringToolDto);
-            measuringTool.setOrganization(organizations.get(measuringToolDto.getOrganizationId()));
-            measuringTool.setToolOwner(organizations.get(measuringToolDto.getToolOwnerId()));
-            measuringTool.setManufacturer(organizations.get(measuringToolDto.getManufacturerId()));
-            measuringTool.setEmployee(employees.get(measuringToolDto.getEmployeeId()));
-            measuringTool.setControlType(controlTypes.get(measuringToolDto.getControlTypeId()));
-            measuringTools.add(measuringTool);
+            measuringTools.add(set(mapper.mapToNewMeasuringTool(measuringToolDto)
+                                                                , idsMapper.mapFromNewMeasuringToolDto(measuringToolDto)
+                                                                , factory)
+            );
         }
         return mapper.mapToMeasuringToolDto(repository.saveAll(measuringTools));
     }
@@ -71,36 +49,15 @@ public class MeasuringToolServiceImpl implements MeasuringToolService {
     @Override
     public List<MeasuringToolDto> update(List<UpdateMeasuringToolDto> measuringToolsDto) {
         validateIds(measuringToolsDto.stream().map(UpdateMeasuringToolDto::getId).toList());
-        Map<Long, Organization> organizations = organizationService.getAllByIds(measuringToolsDto
-                                                                .stream()
-                                                                .map(UpdateMeasuringToolDto::getOrganizationId)
-                                                                .distinct()
-                                                                .toList())
-                                                                .stream()
-                                                                .collect(Collectors.toMap(Organization::getId, o -> o));
-        Map<Long, Employee> employees = employeeService.getAllByIds(measuringToolsDto
-                                                                    .stream()
-                                                                    .map(UpdateMeasuringToolDto::getEmployeeId)
-                                                                    .distinct()
-                                                                    .toList())
-                                                                    .stream()
-                                                                    .collect(Collectors.toMap(Employee::getId, e -> e));
-        Map<Long, ControlType> controlTypes = controlTypeService.getAllByIds(measuringToolsDto
-                                                                .stream()
-                                                                .map(UpdateMeasuringToolDto::getControlTypeId)
-                                                                .distinct()
-                                                                .toList())
-                                                                .stream()
-                                                                .collect(Collectors.toMap(ControlType::getId, c -> c));
+        Factory factory = factoryService.create(measuringToolsDto.stream()
+                                                                 .map(idsMapper::mapFromUpdateMeasuringToolDto)
+                                                                 .toList());
         List<MeasuringTool> measuringTools = new ArrayList<>();
         for (UpdateMeasuringToolDto measuringToolDto : measuringToolsDto) {
-            MeasuringTool measuringTool = mapper.mapToUpdateMeasuringTool(measuringToolDto);
-            measuringTool.setOrganization(organizations.get(measuringToolDto.getOrganizationId()));
-            measuringTool.setToolOwner(organizations.get(measuringToolDto.getToolOwnerId()));
-            measuringTool.setManufacturer(organizations.get(measuringToolDto.getManufacturerId()));
-            measuringTool.setEmployee(employees.get(measuringToolDto.getEmployeeId()));
-            measuringTool.setControlType(controlTypes.get(measuringToolDto.getControlTypeId()));
-            measuringTools.add(measuringTool);
+            measuringTools.add(set(mapper.mapToUpdateMeasuringTool(measuringToolDto)
+                                                             , idsMapper.mapFromUpdateMeasuringToolDto(measuringToolDto)
+                                                             , factory)
+            );
         }
         return mapper.mapToMeasuringToolDto(repository.saveAll(measuringTools));
     }
@@ -109,7 +66,7 @@ public class MeasuringToolServiceImpl implements MeasuringToolService {
     public List<MeasuringToolDto> getAll(RequestParameters parameters) {
         BooleanBuilder booleanBuilder = new BooleanBuilder();
         if (parameters.getName() != null) {
-            booleanBuilder.and(QMeasuringTool.measuringTool.name.eq(parameters.getName()));
+            booleanBuilder.and(QMeasuringTool.measuringTool.toll.eq(parameters.getName()));
         }
         if (parameters.getModel() != null) {
             booleanBuilder.and(QMeasuringTool.measuringTool.model.eq(parameters.getModel()));
@@ -130,7 +87,7 @@ public class MeasuringToolServiceImpl implements MeasuringToolService {
             booleanBuilder.and(QMeasuringTool.measuringTool.organization.id.eq(parameters.getOrganizationId()));
         }
         if (parameters.getTypeId() != null) {
-            booleanBuilder.and(QMeasuringTool.measuringTool.type.id.eq(parameters.getTypeId()));
+            booleanBuilder.and(QMeasuringTool.measuringTool.controlType.id.eq(parameters.getTypeId()));
         }
         if (parameters.getEmployeeId() != null) {
             booleanBuilder.and(QMeasuringTool.measuringTool.employee.id.eq(parameters.getEmployeeId()));
@@ -160,5 +117,14 @@ public class MeasuringToolServiceImpl implements MeasuringToolService {
             ids = ids.stream().filter(e -> !idsDb.contains(e)).collect(Collectors.toList());
             throw new NotFoundException(String.format("measuring tools with ids= %s not found", ids));
         }
+    }
+
+    private MeasuringTool set(MeasuringTool measuringTool, ObjectsIds ids, Factory factory) {
+        measuringTool.setOrganization(factory.getOrganizations().get(ids.getOrganizationId()));
+        measuringTool.setToolOwner(factory.getOrganizations().get(ids.getToolOwnerId()));
+        measuringTool.setManufacturer(factory.getOrganizations().get(ids.getManufacturerId()));
+        measuringTool.setEmployee(factory.getEmployees().get(ids.getEmployeeId()));
+        measuringTool.setControlType(factory.getControlTypes().get(ids.getControlTypeId()));
+        return measuringTool;
     }
 }
