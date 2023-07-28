@@ -7,10 +7,7 @@ import ru.nabokovsg.dataservice.dto.employee.ShortEmployeeDto;
 import ru.nabokovsg.dataservice.dto.employee.UpdateEmployeeDto;
 import ru.nabokovsg.dataservice.dto.employee.NewEmployeeDto;
 import ru.nabokovsg.dataservice.exceptions.NotFoundException;
-import ru.nabokovsg.dataservice.mapper.BranchMapper;
-import ru.nabokovsg.dataservice.mapper.DepartmentMapper;
-import ru.nabokovsg.dataservice.mapper.EmployeeMapper;
-import ru.nabokovsg.dataservice.mapper.OrganizationMapper;
+import ru.nabokovsg.dataservice.mapper.*;
 import ru.nabokovsg.dataservice.model.Employee;
 import ru.nabokovsg.dataservice.model.MeasuringTool;
 import ru.nabokovsg.dataservice.repository.CertificateRepository;
@@ -30,6 +27,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     private final CertificateRepository certificateRepository;
     private final MeasuringToolRepository measuringToolRepository;
     private final RequisitesService requisitesService;
+    private final RequisitesMapper requisitesMapper;
     private final OrganizationService organizationService;
     private final OrganizationMapper organizationMapper;
     private final BranchService branchService;
@@ -41,7 +39,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     public ShortEmployeeDto save(NewEmployeeDto employeeDto) {
         Employee employee = mapper.mapToEmployee(employeeDto);
         if (employeeDto.getRequisites() != null) {
-            employee.setRequisites(requisitesService.save(employeeDto.getRequisites()));
+            employee.setRequisites(requisitesService.save(requisitesMapper.mapToNewRequisitesDto(employeeDto.getRequisites())));
         }
         set(employee
                 , employeeDto.getOrganizationId()
@@ -57,7 +55,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         }
         Employee employee = mapper.mapToUpdateEmployee(employeeDto);
         if (employeeDto.getRequisites() != null) {
-            employee.setRequisites(requisitesService.update(employeeDto.getRequisites()));
+            employee.setRequisites(requisitesService.update(requisitesMapper.mapToUpdateRequisitesDto(employeeDto.getRequisites())));
         }
         return mapper.mapToEmployeeShortDto(repository.save(set(employee
                                                               , employeeDto.getOrganizationId()
