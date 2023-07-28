@@ -29,6 +29,9 @@ public class FactoryServiceImpl implements FactoryService {
         organizationId.addAll(objects.stream()
                 .map(ObjectsIds::getManufacturerId)
                 .toList());
+        organizationId.addAll(objects.stream()
+                .map(ObjectsIds::getToolOwnerId)
+                .toList());
         return new Factory(organizationService.getAllByIds(organizationId.stream()
                         .distinct()
                         .toList())

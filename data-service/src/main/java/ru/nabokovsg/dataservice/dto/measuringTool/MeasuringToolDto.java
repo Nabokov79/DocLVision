@@ -6,7 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 import ru.nabokovsg.dataservice.dto.controlType.ControlTypeDto;
 import ru.nabokovsg.dataservice.dto.employee.ShortEmployeeDto;
-import ru.nabokovsg.dataservice.dto.organization.OrganizationDto;
+import ru.nabokovsg.dataservice.dto.organization.UltraShortOrganizationDto;
 
 import java.time.LocalDate;
 
@@ -19,7 +19,7 @@ public class MeasuringToolDto {
     @Schema(description = "Индентификатор")
     private Long id;
     @Schema(description = "Название")
-    private String name;
+    private String toll;
     @Schema(description = "Модель")
     private String model;
     @Schema(description = "Заводской номер")
@@ -31,19 +31,19 @@ public class MeasuringToolDto {
     @Schema(description = "Дата начала эксплуатации")
     private LocalDate exploitation;
     @Schema(description = "Организация-изготовитель")
-    private OrganizationDto manufacturer;
+    private UltraShortOrganizationDto manufacturer;
     @Schema(description = "Диапазон измерений")
     private String  measuringRange;
     @Schema(description = "Характеристики")
     private String characteristics;
     @Schema(description = "Владелец инструмента")
-    private OrganizationDto toolOwner;
+    private UltraShortOrganizationDto toolOwner;
     @Schema(description = "Дата поверки")
     private LocalDate verificationDate;
     @Schema(description = "Дата следующей поверки")
     private LocalDate nextVerificationDate;
     @Schema(description = "Метрологическая организация")
-    private OrganizationDto organization;
+    private UltraShortOrganizationDto organization;
     @Schema(description = "Номер свидетельства о поверке")
     private String certificateNumber;
     @Schema(description = "Номер госреестра")
@@ -51,7 +51,7 @@ public class MeasuringToolDto {
     @Schema(description = "Примечание")
     private String note;
     @Schema(description = "Вид контроля")
-    private ControlTypeDto type;
+    private ControlTypeDto controlType;
     @Schema(description = "Сотрудник")
     private ShortEmployeeDto employee;
 }

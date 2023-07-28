@@ -78,7 +78,7 @@ public class CertificateServiceImpl implements CertificateService {
             booleanBuilder.and(QCertificate.certificate.employee.id.eq(employeeId));
         }
         if (date != null) {
-            booleanBuilder.and(QCertificate.certificate.end.before(date));
+            booleanBuilder.and(QCertificate.certificate.endDate.before(date));
         }
         QCertificate certificates = QCertificate.certificate;
         JPAQueryFactory qf = new JPAQueryFactory(entityManager);
