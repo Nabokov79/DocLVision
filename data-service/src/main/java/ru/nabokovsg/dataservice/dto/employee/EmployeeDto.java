@@ -7,7 +7,7 @@ import lombok.Setter;
 import ru.nabokovsg.dataservice.dto.branch.UltraShortBranchDto;
 import ru.nabokovsg.dataservice.dto.certificate.CertificateDto;
 import ru.nabokovsg.dataservice.dto.department.UltraShortDepartmentDto;
-import ru.nabokovsg.dataservice.dto.measuringTool.MeasuringToolDto;
+import ru.nabokovsg.dataservice.dto.measuringTool.MeasuringToolEmployeeDto;
 import ru.nabokovsg.dataservice.dto.organization.UltraShortOrganizationDto;
 import ru.nabokovsg.dataservice.dto.requisites.RequisitesEmployeeDto;
 
@@ -48,5 +48,5 @@ public class EmployeeDto {
     @Schema(description = "Список сертификатов сотрудника")
     private List<CertificateDto> certificate;
     @Schema(description = "Список средств(приборов) закрепленных за сотрудником")
-    private List<MeasuringToolDto> measuringTool;
+    private List<MeasuringToolEmployeeDto> measuringTool;
 }
