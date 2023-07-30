@@ -19,13 +19,13 @@ public class License {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne
     @JoinColumn(name = "organization_id", referencedColumnName = "id")
     private Organization organization;
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne
     @JoinColumn(name = "branch_id", referencedColumnName = "id")
     private Branch branch;
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne
     @JoinColumn(name = "department_id", referencedColumnName = "id")
     private Department department;
     @Column(name = "document_type")
