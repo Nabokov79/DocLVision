@@ -5,7 +5,7 @@ import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.nabokovsg.dataservice.dto.Factory;
+import ru.nabokovsg.dataservice.dto.Builder;
 import ru.nabokovsg.dataservice.dto.ObjectsIds;
 import ru.nabokovsg.dataservice.dto.certificate.CertificateDto;
 import ru.nabokovsg.dataservice.dto.certificate.NewCertificateDto;
@@ -30,22 +30,16 @@ public class CertificateServiceImpl implements CertificateService {
     private final CertificateMapper mapper;
     private final EntityManager entityManager;
     private final IdsMapper idsMapper;
-    private final FactoryService factoryService;
+    private final BuilderService service;
 
     @Override
     public List<CertificateDto> save(List<NewCertificateDto> certificatesDto) {
-        if (certificatesDto.isEmpty()) {
-            throw new NotFoundException("new certificates not found for save");
-        }
-        Factory factory = factoryService.create(certificatesDto.stream()
-                                                               .map(idsMapper::mapFromNewCertificateDto)
-                                                               .toList()
-                                                        );
+        Builder builder = service.getBuilder(certificatesDto.stream().map(idsMapper::mapFromNewCertificateDto).toList(), BuilderType.CERTIFICATE);
         List<Certificate> certificates = new ArrayList<>();
         for (NewCertificateDto certificateDto : certificatesDto) {
             certificates.add(set(mapper.mapToNewCertificate(certificateDto)
                             , idsMapper.mapFromNewCertificateDto(certificateDto)
-                            , factory)
+                            , builder)
             );
         }
         return mapper.mapToCertificatesDto(repository.saveAll(certificates));
@@ -53,19 +47,13 @@ public class CertificateServiceImpl implements CertificateService {
 
     @Override
     public List<CertificateDto> update(List<UpdateCertificateDto> certificatesDto) {
-        if (certificatesDto.isEmpty()) {
-            throw new NotFoundException("certificates not found for update");
-        }
         validateIds(certificatesDto.stream().map(UpdateCertificateDto::getId).toList());
-        Factory factory = factoryService.create(certificatesDto.stream()
-                                                               .map(idsMapper::mapFromUpdateCertificateDto)
-                                                               .toList()
-        );
+        Builder builder = service.getBuilder(certificatesDto.stream().map(idsMapper::mapFromUpdateCertificateDto).toList(), BuilderType.CERTIFICATE);
         List<Certificate> certificates = new ArrayList<>();
         for (UpdateCertificateDto certificateDto : certificatesDto) {
             certificates.add(set(mapper.mapToUpdateCertificate(certificateDto)
                     , idsMapper.mapFromUpdateCertificateDto(certificateDto)
-                    , factory)
+                    , builder)
             );
         }
         return mapper.mapToCertificatesDto(repository.saveAll(certificates));
@@ -107,10 +95,10 @@ public class CertificateServiceImpl implements CertificateService {
         }
     }
 
-    private Certificate set(Certificate certificate, ObjectsIds ids, Factory factory) {
-        certificate.setOrganization(factory.getOrganizations().get(ids.getOrganizationId()));
-        certificate.setEmployee(factory.getEmployees().get(ids.getEmployeeId()));
-        certificate.setControlType(factory.getControlTypes().get(ids.getControlTypeId()));
+    private Certificate set(Certificate certificate, ObjectsIds ids, Builder builder) {
+        certificate.setOrganization(builder.getOrganizations().get(ids.getOrganizationId()));
+        certificate.setEmployee(builder.getEmployees().get(ids.getEmployeeId()));
+        certificate.setControlType(builder.getControlTypes().get(ids.getControlTypeId()));
         return certificate;
     }
 }

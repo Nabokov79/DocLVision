@@ -57,11 +57,10 @@ public class OrganizationServiceImpl implements OrganizationService {
 
     @Override
     public List<Organization> getAllByIds(List<Long> ids) {
-        List<Organization> organizations = repository.findAllById(ids);
-        if (organizations.isEmpty()) {
+        if (ids.isEmpty()) {
             throw new NotFoundException(String.format("Organization with ids=%s not found", ids));
         }
-        return organizations;
+        return repository.findAllById(ids);
     }
 
     @Override

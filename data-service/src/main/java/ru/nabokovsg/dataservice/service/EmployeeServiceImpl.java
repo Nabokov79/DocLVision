@@ -76,11 +76,10 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public List<Employee> getAllByIds(List<Long> ids) {
-        List<Employee> employees = repository.findAllById(ids);
-        if (employees.isEmpty()) {
+        if (ids.isEmpty()) {
             throw new NotFoundException(String.format("Employee with ids=%s not found", ids));
         }
-        return employees;
+        return repository.findAllById(ids);
     }
 
     @Override
