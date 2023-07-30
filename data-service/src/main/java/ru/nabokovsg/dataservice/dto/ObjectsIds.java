@@ -16,4 +16,9 @@ public class ObjectsIds {
     private Long employeeId;
     private Long toolOwnerId;
     private Long manufacturerId;
+    private Long objectsTypeId;
+    private Long buildingId;
+    private Long issuedLicenseId;
+    private Long branchId;
+    private Long departmentId;
 }
