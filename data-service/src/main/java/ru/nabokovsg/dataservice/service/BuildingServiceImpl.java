@@ -19,7 +19,6 @@ public class BuildingServiceImpl implements BuildingService {
 
     private final BuildingRepository repository;
     private final BuildingMapper mapper;
-    private final AddressService addressService;
     private final DepartmentService departmentService;
     private final DepartmentMapper departmentMapper;
     private final RequisitesService requisitesService;
@@ -50,6 +49,14 @@ public class BuildingServiceImpl implements BuildingService {
         return mapper.mapToBuildingsDto(
                 repository.findAllByDepartment(departmentMapper.mapToDepartment(departmentService.get(departmentId)))
         );
+    }
+
+    @Override
+    public List<Building> getAllByIds(List<Long> ids) {
+        if (ids.isEmpty()) {
+            throw new NotFoundException(String.format("buildings with ids=%s not found", ids));
+        }
+        return repository.findAllById(ids);
     }
 
     @Override
