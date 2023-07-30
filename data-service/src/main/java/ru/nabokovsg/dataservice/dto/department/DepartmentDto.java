@@ -6,8 +6,11 @@ import lombok.Getter;
 import lombok.Setter;
 import ru.nabokovsg.dataservice.dto.branch.BranchDto;
 import ru.nabokovsg.dataservice.dto.requisites.RequisitesDto;
+import ru.nabokovsg.dataservice.model.Building;
+
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
+import java.util.Set;
 
 @Setter
 @Getter
@@ -23,6 +26,8 @@ public class DepartmentDto {
     private String shortNameDepartment;
     @Schema(description = "Номер подразделения филиала организации")
     private Integer departmentNumber;
+    @Schema(description = "Котельная, ЦТП")
+    private Set<Building> buildings;
     @Schema(description = "Реквизиты подразделения филиала организации")
     private RequisitesDto requisites;
     @Schema(description = "Филиал организации")
