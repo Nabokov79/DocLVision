@@ -2,18 +2,19 @@ package ru.nabokovsg.dataservice.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import ru.nabokovsg.dataservice.dto.ObjectsIds;
 import ru.nabokovsg.dataservice.dto.license.LicenseDto;
 import ru.nabokovsg.dataservice.dto.license.NewLicenseDto;
 import ru.nabokovsg.dataservice.dto.license.UpdateLicenseDto;
 import ru.nabokovsg.dataservice.exceptions.NotFoundException;
-import ru.nabokovsg.dataservice.mapper.BranchMapper;
-import ru.nabokovsg.dataservice.mapper.DepartmentMapper;
-import ru.nabokovsg.dataservice.mapper.LicenseMapper;
-import ru.nabokovsg.dataservice.mapper.OrganizationMapper;
+import ru.nabokovsg.dataservice.mapper.*;
+import ru.nabokovsg.dataservice.model.BuilderType;
 import ru.nabokovsg.dataservice.model.License;
+import ru.nabokovsg.dataservice.model.Organization;
 import ru.nabokovsg.dataservice.repository.LicenseRepository;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -21,37 +22,26 @@ public class LicenseServiceImpl implements LicenseService {
 
     private final LicenseRepository repository;
     private final LicenseMapper mapper;
-    private final OrganizationService organizationService;
-    private final OrganizationMapper organizationMapper;
     private final BranchService branchService;
     private final BranchMapper branchMapper;
     private final DepartmentService departmentService;
     private final DepartmentMapper departmentMapper;
+    private final BuilderService service;
+    private final IdsMapper idsMapper;
 
 
     @Override
     public LicenseDto save(NewLicenseDto licenseDto) {
         validateIds(licenseDto.getOrganizationId(), licenseDto.getBranchId(), licenseDto.getDepartmentId());
-        License license = mapper.mapToNewLicense(licenseDto);
-        license.setOrganization(
-                organizationMapper.mapToOrganization(organizationService.get(licenseDto.getOrganizationId()))
-        );
-        license.setBranch(branchMapper.mapToBranch(branchService.get(licenseDto.getBranchId())));
-        license.setDepartment(departmentMapper.mapToDepartment(departmentService.get(licenseDto.getDepartmentId())));
-        return mapper.mapToLicenseDto(repository.save(license));
+        return mapper.mapToLicenseDto(repository.save(set(mapper.mapToNewLicense(licenseDto)
+                                                        , idsMapper.mapFromNewLicense(licenseDto))));
     }
 
     @Override
     public LicenseDto update(UpdateLicenseDto licenseDto) {
         if (repository.existsById(licenseDto.getId())) {
-            validateIds(licenseDto.getOrganizationId(), licenseDto.getBranchId(), licenseDto.getDepartmentId());
-            License license = mapper.mapToUpdateLicense(licenseDto);
-            license.setOrganization(
-                    organizationMapper.mapToOrganization(organizationService.get(licenseDto.getOrganizationId()))
-            );
-            license.setBranch(branchMapper.mapToBranch(branchService.get(licenseDto.getBranchId())));
-            license.setDepartment(departmentMapper.mapToDepartment(departmentService.get(licenseDto.getDepartmentId())));
-            return mapper.mapToLicenseDto(repository.save(license));
+            return mapper.mapToLicenseDto(repository.save(set(mapper.mapToUpdateLicense(licenseDto)
+                                                           , idsMapper.mapFromUpdateLicense(licenseDto))));
         }
         throw new NotFoundException(String.format("license with id=%s not found for update", licenseDto.getId()));
     }
@@ -87,5 +77,16 @@ public class LicenseServiceImpl implements LicenseService {
         if (departmentId == null || departmentId < 0) {
             throw new NotFoundException(String.format("department id=%s is not or negative", departmentId));
         }
+    }
+    private License set(License license, ObjectsIds ids) {
+        ObjectsIds objectsIds = new ObjectsIds();
+        objectsIds.setObjectsTypeId(ids.getOrganizationId());
+        objectsIds.setIssuedLicenseId(ids.getIssuedLicenseId());
+        Map<Long, Organization> organizations = service.getBuilder(List.of(objectsIds), BuilderType.LICENSE).getOrganizations();
+        license.setOrganization(organizations.get(ids.getOrganizationId()));
+        license.setIssuedLicense(organizations.get(ids.getIssuedLicenseId()));
+        license.setBranch(branchMapper.mapToBranch(branchService.get(ids.getBranchId())));
+        license.setDepartment(departmentMapper.mapToDepartment(departmentService.get(ids.getDepartmentId())));
+        return license;
     }
 }
