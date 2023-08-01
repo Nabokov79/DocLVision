@@ -10,6 +10,8 @@ import ru.nabokovsg.dataservice.dto.measuringTool.NewMeasuringToolDto;
 import ru.nabokovsg.dataservice.dto.measuringTool.UpdateMeasuringToolDto;
 import ru.nabokovsg.dataservice.dto.object.NewObjectDto;
 import ru.nabokovsg.dataservice.dto.object.UpdateObjectDto;
+import ru.nabokovsg.dataservice.dto.survey.NewSurveyDto;
+import ru.nabokovsg.dataservice.dto.survey.UpdateSurveyDto;
 
 @Mapper(componentModel = "spring")
 public interface IdsMapper {
@@ -29,4 +31,8 @@ public interface IdsMapper {
     ObjectsIds mapFromNewLicense(NewLicenseDto objectDto);
 
     ObjectsIds mapFromUpdateLicense(UpdateLicenseDto objectDto);
+
+    ObjectsIds mapFromNewSurvey(NewSurveyDto surveyDto);
+
+    ObjectsIds mapFromUpdateSurvey(UpdateSurveyDto surveyDto);
 }
