@@ -42,6 +42,12 @@ public class ObjectsTypeServiceImpl implements ObjectsTypeService {
     }
 
     @Override
+    public ObjectsType get(Long id) {
+        return repository.findById(id)
+                      .orElseThrow(() -> new NotFoundException(String.format("Objects type with id=%s not found", id)));
+    }
+
+    @Override
     public void delete(Long id) {
         if (repository.existsById(id)) {
             repository.deleteById(id);

@@ -15,5 +15,7 @@ public interface ObjectsTypeService {
 
     List<ObjectsType> getAllByIds(List<Long> ids);
 
+    ObjectsType get(Long id);
+
     void delete(Long id);
 }
