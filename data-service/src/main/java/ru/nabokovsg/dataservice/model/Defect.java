@@ -24,5 +24,5 @@ public class Defect {
             joinColumns = {@JoinColumn(name = "defect_id")},
             inverseJoinColumns = {@JoinColumn(name = "defect_parameter_id")})
     @ToString.Exclude
-    private Set<DefectParameter> defectParameters;
+    private Set<DefectParameter> parameters;
 }
