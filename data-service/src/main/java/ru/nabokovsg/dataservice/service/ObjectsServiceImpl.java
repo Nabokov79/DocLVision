@@ -16,6 +16,7 @@ import ru.nabokovsg.dataservice.repository.ObjectsRepository;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -52,6 +53,11 @@ public class ObjectsServiceImpl implements ObjectsService {
             objects.add(object);
         }
         return mapper.mapToObjectDto(repository.saveAll(objects));
+    }
+
+    @Override
+    public List<Objects> getAllById(List<Long> ids) {
+        return repository.findAllById(ids);
     }
 
     @Override
