@@ -10,9 +10,7 @@ import ru.nabokovsg.dataservice.mapper.ElementMapper;
 import ru.nabokovsg.dataservice.model.Element;
 import ru.nabokovsg.dataservice.repository.ElementRepository;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -51,6 +49,11 @@ public class ElementServiceImpl implements ElementService {
             elements.add(element);
         }
         return mapper.mapToElementsDto(repository.saveAll(elements));
+    }
+
+    @Override
+    public Set<Element> getAllByIds(List<Long> elementIds) {
+        return new HashSet<>(repository.findAllById(elementIds));
     }
 
     private void validateIds(List<Long> ids) {
