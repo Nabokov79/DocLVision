@@ -10,6 +10,7 @@ public class Builder {
     private final Map<Long, ControlType> controlTypes;
     private final Map<Long, Building> buildings;
     private final Map<Long, ObjectsType> objectsTypes;
+    private final Map<Long, Objects> objects;
 
     private Builder(DataBuilder factory) {
         this.organizations = factory.organizations;
@@ -17,6 +18,7 @@ public class Builder {
         this.controlTypes = factory.controlTypes;
         this.buildings = factory.buildings;
         this.objectsTypes = factory.objectsTypes;
+        this.objects = factory.objects;
     }
 
     public Map<Long, Organization> getOrganizations() {
@@ -39,6 +41,10 @@ public class Builder {
         return objectsTypes;
     }
 
+    public Map<Long, Objects> getObjects() {
+        return objects;
+    }
+
     @Override
     public String toString() {
         return "Factory{" +
@@ -57,6 +63,7 @@ public class Builder {
         private Map<Long, ControlType> controlTypes;
         private Map<Long, Building> buildings;
         private Map<Long, ObjectsType> objectsTypes;
+        private Map<Long, Objects> objects;
 
         public DataBuilder organizations(Map<Long, Organization> organizations) {
             this.organizations = organizations;
@@ -80,6 +87,11 @@ public class Builder {
 
         public DataBuilder objectsTypes(Map<Long, ObjectsType> objectsTypes) {
             this.objectsTypes = objectsTypes;
+            return this;
+        }
+
+        public DataBuilder objects(Map<Long, Objects> objects) {
+            this.objects = objects;
             return this;
         }
 

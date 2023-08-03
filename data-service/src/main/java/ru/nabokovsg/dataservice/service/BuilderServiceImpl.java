@@ -83,6 +83,17 @@ public class BuilderServiceImpl implements BuilderService  {
                                           .flatMap(Function.identity()).distinct().toList()))
                                   .build();
             }
+            case SURVEY -> {
+                return new Builder.DataBuilder().objectsTypes(getAllObjectsTypes(ids.stream()
+                                                                                     .map(ObjectsIds::getObjectsTypeId)
+                                                                                     .distinct()
+                                                                                     .toList()))
+                                                .organizations(getAllOrganizations(ids.stream()
+                                                                                     .map(ObjectsIds::getOrganizationId)
+                                                                                     .distinct()
+                                                                                     .toList()))
+                                                .build();
+            }
             default ->  throw new BadRequestException(String.format("type= %s is not supported", type));
         }
     }
