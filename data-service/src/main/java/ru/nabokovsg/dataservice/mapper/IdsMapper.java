@@ -32,7 +32,7 @@ public interface IdsMapper {
 
     ObjectsIds mapFromUpdateLicense(UpdateLicenseDto objectDto);
 
-    ObjectsIds mapFromNewSurvey(NewSurveyDto surveyDto);
+    ObjectsIds mapFromNewSurveyDto(NewSurveyDto surveyDto);
 
-    ObjectsIds mapFromUpdateSurvey(UpdateSurveyDto surveyDto);
+    ObjectsIds mapFromUpdateSurveyDto(UpdateSurveyDto surveyDto);
 }
