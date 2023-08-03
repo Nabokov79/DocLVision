@@ -5,5 +5,6 @@ public enum BuilderType {
     MEASURING_TOOL,
     CERTIFICATE,
     OBJECT,
-    LICENSE
+    LICENSE,
+    SURVEY
 }
