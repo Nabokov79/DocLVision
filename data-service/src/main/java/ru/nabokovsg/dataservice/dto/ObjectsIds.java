@@ -21,4 +21,5 @@ public class ObjectsIds {
     private Long issuedLicenseId;
     private Long branchId;
     private Long departmentId;
+    private Long objectId;
 }
