@@ -4,7 +4,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
-import ru.nabokovsg.dataservice.dto.object.ShortDataObjects;
+import ru.nabokovsg.dataservice.dto.object.ShortDataObjectsDto;
 import ru.nabokovsg.dataservice.dto.repair.RepairDto;
 import ru.nabokovsg.dataservice.dto.survey.SurveyDto;
 import ru.nabokovsg.dataservice.model.DataPassportOfObject;
@@ -21,7 +21,7 @@ public class PassportDto {
     @Schema(description = "Индентификатор")
     private long id;
     @Schema(description = "Объект обследования")
-    private ShortDataObjects object;
+    private ShortDataObjectsDto object;
     @Schema(description = "Список проведенных обследований")
     private List<SurveyDto> surveys;
     @Schema(description = "Список произведенных ремонтов")
