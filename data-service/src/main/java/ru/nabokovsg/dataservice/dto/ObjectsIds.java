@@ -22,4 +22,5 @@ public class ObjectsIds {
     private Long branchId;
     private Long departmentId;
     private Long objectId;
+    private Long templateId;
 }
