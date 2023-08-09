@@ -11,6 +11,7 @@ public class Builder {
     private final Map<Long, Building> buildings;
     private final Map<Long, ObjectsType> objectsTypes;
     private final Map<Long, Objects> objects;
+    private final Map<Long, ObjectPassportDataTemplate> templates;
 
     private Builder(DataBuilder factory) {
         this.organizations = factory.organizations;
@@ -19,6 +20,7 @@ public class Builder {
         this.buildings = factory.buildings;
         this.objectsTypes = factory.objectsTypes;
         this.objects = factory.objects;
+        this.templates = factory.templates;
     }
 
     public Map<Long, Organization> getOrganizations() {
@@ -45,15 +47,8 @@ public class Builder {
         return objects;
     }
 
-    @Override
-    public String toString() {
-        return "Factory{" +
-                "organizations=" + organizations +
-                ", employees=" + employees +
-                ", controlTypes=" + controlTypes +
-                ", buildings=" + buildings +
-                ", objectsTypes=" + objectsTypes +
-                '}';
+    public Map<Long, ObjectPassportDataTemplate> getTemplates() {
+        return templates;
     }
 
     public static class DataBuilder {
@@ -64,6 +59,7 @@ public class Builder {
         private Map<Long, Building> buildings;
         private Map<Long, ObjectsType> objectsTypes;
         private Map<Long, Objects> objects;
+        private Map<Long, ObjectPassportDataTemplate> templates;
 
         public DataBuilder organizations(Map<Long, Organization> organizations) {
             this.organizations = organizations;
@@ -92,6 +88,11 @@ public class Builder {
 
         public DataBuilder objects(Map<Long, Objects> objects) {
             this.objects = objects;
+            return this;
+        }
+
+        public DataBuilder templates(Map<Long, ObjectPassportDataTemplate> templates) {
+            this.templates = templates;
             return this;
         }
 
