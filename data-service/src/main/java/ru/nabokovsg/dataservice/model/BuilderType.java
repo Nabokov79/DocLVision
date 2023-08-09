@@ -6,5 +6,7 @@ public enum BuilderType {
     CERTIFICATE,
     OBJECT,
     LICENSE,
-    SURVEY
+    SURVEY,
+    REPAIR,
+    PASSPORT_DATA
 }
