@@ -13,7 +13,7 @@ public interface SurveysMapper {
 
     Survey mapToNewSurvey(NewSurveyDto surveyDto);
 
-    Survey mapToUpdateSurvey(UpdateSurveyDto surveyDto);
+    List<Survey> mapToUpdateSurvey(List<UpdateSurveyDto> surveyDto);
 
     List<SurveyDto> mapToSurveyDto(List<Survey> surveys);
 }
