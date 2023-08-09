@@ -7,7 +7,7 @@ import ru.nabokovsg.dataservice.dto.object.NewObjectDto;
 import ru.nabokovsg.dataservice.dto.object.UpdateObjectDto;
 import ru.nabokovsg.dataservice.dto.object.ObjectDto;
 import ru.nabokovsg.dataservice.exceptions.NotFoundException;
-import ru.nabokovsg.dataservice.mapper.IdsMapper;
+import ru.nabokovsg.dataservice.mapper.ObjectsIdsMapper;
 import ru.nabokovsg.dataservice.mapper.ObjectsMapper;
 import ru.nabokovsg.dataservice.model.BuilderType;
 import ru.nabokovsg.dataservice.model.Objects;
@@ -16,7 +16,6 @@ import ru.nabokovsg.dataservice.repository.ObjectsRepository;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -25,12 +24,15 @@ public class ObjectsServiceImpl implements ObjectsService {
 
     private final ObjectsRepository repository;
     private final ObjectsMapper mapper;
-    private final IdsMapper idsMapper;
-    private final BuilderService service;
+    private final ObjectsIdsMapper objectsIdsMapper;
+    private final BuilderFactoryService factoryService;
 
     @Override
     public List<ObjectDto> save(List<NewObjectDto> objectsDto) {
-        Builder builder = service.getBuilder(objectsDto.stream().map(idsMapper::mapFromNewObjectDto).toList(), BuilderType.OBJECT);
+        Builder builder = factoryService.getBuilder(objectsDto.stream()
+                                                              .map(objectsIdsMapper::mapFromNewObjectDto)
+                                                              .toList()
+                                                   , BuilderType.OBJECT);
         List<Objects> objects = new ArrayList<>();
         for (NewObjectDto objectDto : objectsDto) {
             Objects object = mapper.mapToNewObjects(objectDto);
@@ -44,7 +46,10 @@ public class ObjectsServiceImpl implements ObjectsService {
     @Override
     public List<ObjectDto> update(List<UpdateObjectDto> objectsDto) {
         validateIds(objectsDto.stream().map(UpdateObjectDto::getId).toList());
-        Builder builder = service.getBuilder(objectsDto.stream().map(idsMapper::mapFromUpdateObjectDto).toList(), BuilderType.OBJECT);
+        Builder builder = factoryService.getBuilder(objectsDto.stream()
+                                                              .map(objectsIdsMapper::mapFromUpdateObjectDto)
+                                                              .toList()
+                                                  , BuilderType.OBJECT);
         List<Objects> objects = new ArrayList<>();
         for (UpdateObjectDto objectDto : objectsDto) {
             Objects object = mapper.mapToUpdateObjects(objectDto);
@@ -53,11 +58,6 @@ public class ObjectsServiceImpl implements ObjectsService {
             objects.add(object);
         }
         return mapper.mapToObjectDto(repository.saveAll(objects));
-    }
-
-    @Override
-    public List<Objects> getAllById(List<Long> ids) {
-        return repository.findAllById(ids);
     }
 
     @Override
