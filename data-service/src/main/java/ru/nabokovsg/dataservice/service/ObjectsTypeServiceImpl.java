@@ -34,14 +34,6 @@ public class ObjectsTypeServiceImpl implements ObjectsTypeService {
     }
 
     @Override
-    public List<ObjectsType> getAllByIds(List<Long> ids) {
-        if (ids.isEmpty()) {
-            throw new NotFoundException(String.format("Objects types with ids=%s not found", ids));
-        }
-        return repository.findAllById(ids);
-    }
-
-    @Override
     public ObjectsType get(Long id) {
         return repository.findById(id)
                       .orElseThrow(() -> new NotFoundException(String.format("Objects type with id=%s not found", id)));
