@@ -12,9 +12,10 @@ import ru.nabokovsg.dataservice.dto.certificate.NewCertificateDto;
 import ru.nabokovsg.dataservice.dto.certificate.UpdateCertificateDto;
 import ru.nabokovsg.dataservice.exceptions.NotFoundException;
 import ru.nabokovsg.dataservice.mapper.CertificateMapper;
-import ru.nabokovsg.dataservice.mapper.IdsMapper;
+import ru.nabokovsg.dataservice.mapper.ObjectsIdsMapper;
 import ru.nabokovsg.dataservice.model.*;
 import ru.nabokovsg.dataservice.repository.CertificateRepository;
+
 import javax.persistence.EntityManager;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -29,18 +30,21 @@ public class CertificateServiceImpl implements CertificateService {
     private final CertificateRepository repository;
     private final CertificateMapper mapper;
     private final EntityManager entityManager;
-    private final IdsMapper idsMapper;
-    private final BuilderService service;
+    private final ObjectsIdsMapper objectsIdsMapper;
+    private final BuilderFactoryService factoryService;
+
 
     @Override
     public List<CertificateDto> save(List<NewCertificateDto> certificatesDto) {
-        Builder builder = service.getBuilder(certificatesDto.stream().map(idsMapper::mapFromNewCertificateDto).toList(), BuilderType.CERTIFICATE);
+        Builder builder = factoryService.getBuilder(certificatesDto.stream()
+                                                                   .map(objectsIdsMapper::mapFromNewCertificateDto)
+                                                                   .toList()
+                                                 , BuilderType.CERTIFICATE);
         List<Certificate> certificates = new ArrayList<>();
         for (NewCertificateDto certificateDto : certificatesDto) {
             certificates.add(set(mapper.mapToNewCertificate(certificateDto)
-                            , idsMapper.mapFromNewCertificateDto(certificateDto)
-                            , builder)
-            );
+                               , objectsIdsMapper.mapFromNewCertificateDto(certificateDto)
+                               , builder));
         }
         return mapper.mapToCertificatesDto(repository.saveAll(certificates));
     }
@@ -48,13 +52,15 @@ public class CertificateServiceImpl implements CertificateService {
     @Override
     public List<CertificateDto> update(List<UpdateCertificateDto> certificatesDto) {
         validateIds(certificatesDto.stream().map(UpdateCertificateDto::getId).toList());
-        Builder builder = service.getBuilder(certificatesDto.stream().map(idsMapper::mapFromUpdateCertificateDto).toList(), BuilderType.CERTIFICATE);
+        Builder builder = factoryService.getBuilder(certificatesDto.stream()
+                                                                   .map(objectsIdsMapper::mapFromUpdateCertificateDto)
+                                                                   .toList()
+                                                  , BuilderType.CERTIFICATE);
         List<Certificate> certificates = new ArrayList<>();
         for (UpdateCertificateDto certificateDto : certificatesDto) {
             certificates.add(set(mapper.mapToUpdateCertificate(certificateDto)
-                    , idsMapper.mapFromUpdateCertificateDto(certificateDto)
-                    , builder)
-            );
+                               , objectsIdsMapper.mapFromUpdateCertificateDto(certificateDto)
+                               , builder));
         }
         return mapper.mapToCertificatesDto(repository.saveAll(certificates));
     }

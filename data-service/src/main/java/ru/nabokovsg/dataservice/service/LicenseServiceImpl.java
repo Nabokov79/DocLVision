@@ -2,6 +2,7 @@ package ru.nabokovsg.dataservice.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import ru.nabokovsg.dataservice.dto.Builder;
 import ru.nabokovsg.dataservice.dto.ObjectsIds;
 import ru.nabokovsg.dataservice.dto.license.LicenseDto;
 import ru.nabokovsg.dataservice.dto.license.NewLicenseDto;
@@ -10,11 +11,9 @@ import ru.nabokovsg.dataservice.exceptions.NotFoundException;
 import ru.nabokovsg.dataservice.mapper.*;
 import ru.nabokovsg.dataservice.model.BuilderType;
 import ru.nabokovsg.dataservice.model.License;
-import ru.nabokovsg.dataservice.model.Organization;
 import ru.nabokovsg.dataservice.repository.LicenseRepository;
 
 import java.util.List;
-import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -26,22 +25,22 @@ public class LicenseServiceImpl implements LicenseService {
     private final BranchMapper branchMapper;
     private final DepartmentService departmentService;
     private final DepartmentMapper departmentMapper;
-    private final BuilderService service;
-    private final IdsMapper idsMapper;
+    private final BuilderFactoryService factoryService;
+    private final ObjectsIdsMapper objectsIdsMapper;
 
 
     @Override
     public LicenseDto save(NewLicenseDto licenseDto) {
         validateIds(licenseDto.getOrganizationId(), licenseDto.getBranchId(), licenseDto.getDepartmentId());
         return mapper.mapToLicenseDto(repository.save(set(mapper.mapToNewLicense(licenseDto)
-                                                        , idsMapper.mapFromNewLicense(licenseDto))));
+                                                        , objectsIdsMapper.mapFromNewLicense(licenseDto))));
     }
 
     @Override
     public LicenseDto update(UpdateLicenseDto licenseDto) {
         if (repository.existsById(licenseDto.getId())) {
             return mapper.mapToLicenseDto(repository.save(set(mapper.mapToUpdateLicense(licenseDto)
-                                                           , idsMapper.mapFromUpdateLicense(licenseDto))));
+                                                           , objectsIdsMapper.mapFromUpdateLicense(licenseDto))));
         }
         throw new NotFoundException(String.format("license with id=%s not found for update", licenseDto.getId()));
     }
@@ -79,12 +78,9 @@ public class LicenseServiceImpl implements LicenseService {
         }
     }
     private License set(License license, ObjectsIds ids) {
-        ObjectsIds objectsIds = new ObjectsIds();
-        objectsIds.setObjectsTypeId(ids.getOrganizationId());
-        objectsIds.setIssuedLicenseId(ids.getIssuedLicenseId());
-        Map<Long, Organization> organizations = service.getBuilder(List.of(objectsIds), BuilderType.LICENSE).getOrganizations();
-        license.setOrganization(organizations.get(ids.getOrganizationId()));
-        license.setIssuedLicense(organizations.get(ids.getIssuedLicenseId()));
+        Builder builder = factoryService.getBuilder(List.of(ids), BuilderType.LICENSE);
+        license.setOrganization(builder.getOrganizations().get(ids.getOrganizationId()));
+        license.setIssuedLicense(builder.getOrganizations().get(ids.getIssuedLicenseId()));
         license.setBranch(branchMapper.mapToBranch(branchService.get(ids.getBranchId())));
         license.setDepartment(departmentMapper.mapToDepartment(departmentService.get(ids.getDepartmentId())));
         return license;

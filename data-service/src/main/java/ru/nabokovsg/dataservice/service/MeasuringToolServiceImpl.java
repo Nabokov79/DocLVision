@@ -9,11 +9,9 @@ import ru.nabokovsg.dataservice.dto.Builder;
 import ru.nabokovsg.dataservice.dto.ObjectsIds;
 import ru.nabokovsg.dataservice.dto.measuringTool.*;
 import ru.nabokovsg.dataservice.exceptions.NotFoundException;
-import ru.nabokovsg.dataservice.mapper.IdsMapper;
+import ru.nabokovsg.dataservice.mapper.ObjectsIdsMapper;
 import ru.nabokovsg.dataservice.mapper.MeasuringToolMapper;
-import ru.nabokovsg.dataservice.model.BuilderType;
-import ru.nabokovsg.dataservice.model.MeasuringTool;
-import ru.nabokovsg.dataservice.model.QMeasuringTool;
+import ru.nabokovsg.dataservice.model.*;
 import ru.nabokovsg.dataservice.repository.MeasuringToolRepository;
 
 import javax.persistence.EntityManager;
@@ -29,20 +27,20 @@ public class MeasuringToolServiceImpl implements MeasuringToolService {
     private final MeasuringToolRepository repository;
     private final MeasuringToolMapper mapper;
     private final EntityManager entityManager;
-    private final IdsMapper idsMapper;
-    private final BuilderService service;
+    private final ObjectsIdsMapper objectsIdsMapper;
+    private final BuilderFactoryService factoryService;
 
     @Override
     public List<MeasuringToolDto> save(List<NewMeasuringToolDto> measuringToolsDto) {
-        Builder builder = service.getBuilder(measuringToolsDto.stream()
-                                                      .map(idsMapper::mapFromNewMeasuringToolDto)
-                                                      .toList(), BuilderType.MEASURING_TOOL);
+        Builder builder = factoryService.getBuilder(measuringToolsDto.stream()
+                                                                     .map(objectsIdsMapper::mapFromNewMeasuringToolDto)
+                                                                     .toList()
+                                                  , BuilderType.MEASURING_TOOL);
         List<MeasuringTool> measuringTools = new ArrayList<>();
         for (NewMeasuringToolDto measuringToolDto : measuringToolsDto) {
             measuringTools.add(set(mapper.mapToNewMeasuringTool(measuringToolDto)
-                                                                , idsMapper.mapFromNewMeasuringToolDto(measuringToolDto)
-                                                                , builder)
-            );
+                                 , objectsIdsMapper.mapFromNewMeasuringToolDto(measuringToolDto)
+                                 , builder));
         }
         return mapper.mapToMeasuringToolDto(repository.saveAll(measuringTools));
     }
@@ -50,15 +48,15 @@ public class MeasuringToolServiceImpl implements MeasuringToolService {
     @Override
     public List<MeasuringToolDto> update(List<UpdateMeasuringToolDto> measuringToolsDto) {
         validateIds(measuringToolsDto.stream().map(UpdateMeasuringToolDto::getId).toList());
-        Builder builder = service.getBuilder(measuringToolsDto.stream()
-                                                      .map(idsMapper::mapFromUpdateMeasuringToolDto)
-                                                      .toList(), BuilderType.MEASURING_TOOL);
+        Builder builder = factoryService.getBuilder(measuringToolsDto.stream()
+                                                                    .map(objectsIdsMapper::mapFromUpdateMeasuringToolDto)
+                                                                    .toList()
+                                                  , BuilderType.MEASURING_TOOL);
         List<MeasuringTool> measuringTools = new ArrayList<>();
         for (UpdateMeasuringToolDto measuringToolDto : measuringToolsDto) {
             measuringTools.add(set(mapper.mapToUpdateMeasuringTool(measuringToolDto)
-                                                             , idsMapper.mapFromUpdateMeasuringToolDto(measuringToolDto)
-                                                             , builder)
-            );
+                                 , objectsIdsMapper.mapFromUpdateMeasuringToolDto(measuringToolDto)
+                                 , builder));
         }
         return mapper.mapToMeasuringToolDto(repository.saveAll(measuringTools));
     }
@@ -124,7 +122,9 @@ public class MeasuringToolServiceImpl implements MeasuringToolService {
         measuringTool.setOrganization(builder.getOrganizations().get(ids.getOrganizationId()));
         measuringTool.setToolOwner(builder.getOrganizations().get(ids.getToolOwnerId()));
         measuringTool.setManufacturer(builder.getOrganizations().get(ids.getManufacturerId()));
-        measuringTool.setEmployee(builder.getEmployees().get(ids.getEmployeeId()));
+        if (ids.getEmployeeId() != null) {
+            measuringTool.setEmployee(builder.getEmployees().get(ids.getEmployeeId()));
+        }
         measuringTool.setControlType(builder.getControlTypes().get(ids.getControlTypeId()));
         return measuringTool;
     }
