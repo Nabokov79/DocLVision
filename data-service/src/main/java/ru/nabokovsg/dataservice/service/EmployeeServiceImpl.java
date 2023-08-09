@@ -75,14 +75,6 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public List<Employee> getAllByIds(List<Long> ids) {
-        if (ids.isEmpty()) {
-            throw new NotFoundException(String.format("Employee with ids=%s not found", ids));
-        }
-        return repository.findAllById(ids);
-    }
-
-    @Override
     public void delete(Long id) {
         if (repository.existsById(id)) {
             updateMeasuringTool(id);

@@ -55,14 +55,6 @@ public class ControlTypeServiceImpl implements ControlTypeService {
     }
 
     @Override
-    public List<ControlType> getAllByIds(List<Long> ids) {
-        if (ids.isEmpty()) {
-            throw new NotFoundException(String.format("Control type with ids=%s not found", ids));
-        }
-        return repository.findAllById(ids);
-    }
-
-    @Override
     public void delete(Long id) {
         if (repository.existsById(id)) {
             repository.deleteById(id);

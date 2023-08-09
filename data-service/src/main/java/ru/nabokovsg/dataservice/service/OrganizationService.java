@@ -18,7 +18,5 @@ public interface OrganizationService {
 
     List<ShortOrganizationDto> getAll();
 
-    List<Organization> getAllByIds(List<Long> ids);
-
     void delete(Long id);
 }

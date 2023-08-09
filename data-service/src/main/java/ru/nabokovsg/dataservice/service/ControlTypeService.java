@@ -18,7 +18,5 @@ public interface ControlTypeService {
 
     List<ControlTypeDto> getAll();
 
-    List<ControlType> getAllByIds(List<Long> ids);
-
     void delete(Long id);
 }

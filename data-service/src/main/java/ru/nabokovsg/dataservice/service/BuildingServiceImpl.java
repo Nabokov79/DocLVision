@@ -52,14 +52,6 @@ public class BuildingServiceImpl implements BuildingService {
     }
 
     @Override
-    public List<Building> getAllByIds(List<Long> ids) {
-        if (ids.isEmpty()) {
-            throw new NotFoundException(String.format("buildings with ids=%s not found", ids));
-        }
-        return repository.findAllById(ids);
-    }
-
-    @Override
     public void delete(Long id) {
         if (repository.existsById(id)) {
             repository.deleteById(id);
