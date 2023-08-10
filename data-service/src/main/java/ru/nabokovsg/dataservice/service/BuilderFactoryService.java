@@ -1,7 +1,7 @@
 package ru.nabokovsg.dataservice.service;
 
-import ru.nabokovsg.dataservice.dto.Builder;
-import ru.nabokovsg.dataservice.dto.ObjectsIds;
+import ru.nabokovsg.dataservice.model.Builder;
+import ru.nabokovsg.dataservice.model.ObjectsIds;
 import ru.nabokovsg.dataservice.model.BuilderType;
 
 import java.util.List;
