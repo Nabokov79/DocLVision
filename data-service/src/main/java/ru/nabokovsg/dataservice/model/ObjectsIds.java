@@ -1,19 +1,20 @@
-package ru.nabokovsg.dataservice.dto;
+package ru.nabokovsg.dataservice.model;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @Setter
 @Getter
 @NoArgsConstructor
-@AllArgsConstructor
 public class ObjectsIds {
 
     private Long controlTypeId;
     private Long organizationId;
     private Long employeeId;
+    private List<Long> employeesIds;
     private Long toolOwnerId;
     private Long manufacturerId;
     private Long objectsTypeId;
@@ -23,4 +24,7 @@ public class ObjectsIds {
     private Long departmentId;
     private Long objectId;
     private Long templateId;
+    private Long reportingDocumentId;
+    private Long addressId;
+    private Long workPerformedId;
 }
