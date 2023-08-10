@@ -1,7 +1,11 @@
 package ru.nabokovsg.dataservice.mapper;
 
 import org.mapstruct.Mapper;
-import ru.nabokovsg.dataservice.dto.ObjectsIds;
+import ru.nabokovsg.dataservice.dto.application.NewApplicationDto;
+import ru.nabokovsg.dataservice.dto.application.UpdateApplicationDto;
+import ru.nabokovsg.dataservice.dto.workPerformed.NewWorkPerformedDto;
+import ru.nabokovsg.dataservice.dto.workPerformed.UpdateWorkPerformedDto;
+import ru.nabokovsg.dataservice.model.ObjectsIds;
 import ru.nabokovsg.dataservice.dto.certificate.NewCertificateDto;
 import ru.nabokovsg.dataservice.dto.certificate.UpdateCertificateDto;
 import ru.nabokovsg.dataservice.dto.dataPassportOfObject.NewDataPassportOfObjectDto;
@@ -47,4 +51,12 @@ public interface ObjectsIdsMapper {
     ObjectsIds mapFromNewDataPassportOfObjectDto(NewDataPassportOfObjectDto repairDto);
 
     ObjectsIds mapFromUpdateDataPassportOfObjectDto(UpdateDataPassportOfObjectDto repairDto);
+
+    ObjectsIds mapFromNewWorkPerformedDto(NewWorkPerformedDto workPerformedDto);
+
+    ObjectsIds mapFromUpdateWorkPerformedDto(UpdateWorkPerformedDto workPerformedDto);
+
+    ObjectsIds mapFromNewApplicationDto(NewApplicationDto applicationDto);
+
+    ObjectsIds mapFromUpdateApplicationDto(UpdateApplicationDto applicationDto);
 }
