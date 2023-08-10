@@ -8,5 +8,7 @@ public enum BuilderType {
     LICENSE,
     SURVEY,
     REPAIR,
-    PASSPORT_DATA
+    PASSPORT_DATA,
+    WORK_PERFORMED,
+    APPLICATIONS
 }
