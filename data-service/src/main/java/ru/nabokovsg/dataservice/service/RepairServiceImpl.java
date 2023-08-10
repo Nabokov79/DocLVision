@@ -2,7 +2,7 @@ package ru.nabokovsg.dataservice.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.nabokovsg.dataservice.dto.Builder;
+import ru.nabokovsg.dataservice.model.Builder;
 import ru.nabokovsg.dataservice.dto.repair.NewRepairDto;
 import ru.nabokovsg.dataservice.dto.repair.RepairDto;
 import ru.nabokovsg.dataservice.dto.repair.UpdateRepairDto;

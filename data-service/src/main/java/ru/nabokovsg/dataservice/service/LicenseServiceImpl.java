@@ -2,8 +2,8 @@ package ru.nabokovsg.dataservice.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.nabokovsg.dataservice.dto.Builder;
-import ru.nabokovsg.dataservice.dto.ObjectsIds;
+import ru.nabokovsg.dataservice.model.Builder;
+import ru.nabokovsg.dataservice.model.ObjectsIds;
 import ru.nabokovsg.dataservice.dto.license.LicenseDto;
 import ru.nabokovsg.dataservice.dto.license.NewLicenseDto;
 import ru.nabokovsg.dataservice.dto.license.UpdateLicenseDto;
