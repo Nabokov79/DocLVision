@@ -1,6 +1,5 @@
-package ru.nabokovsg.dataservice.dto;
+package ru.nabokovsg.dataservice.model;
 
-import ru.nabokovsg.dataservice.model.*;
 import java.util.Map;
 
 public class Builder {
@@ -12,6 +11,9 @@ public class Builder {
     private final Map<Long, ObjectsType> objectsTypes;
     private final Map<Long, Objects> objects;
     private final Map<Long, ObjectPassportDataTemplate> templates;
+    private final Map<Long, ReportingDocument> reportingDocuments;
+    private final Map<Long, Address> addresses;
+    private final Map<Long, WorkPerformed> worksPerformed;
 
     private Builder(DataBuilder factory) {
         this.organizations = factory.organizations;
@@ -21,6 +23,9 @@ public class Builder {
         this.objectsTypes = factory.objectsTypes;
         this.objects = factory.objects;
         this.templates = factory.templates;
+        this.reportingDocuments = factory.reportingDocuments;
+        this.addresses = factory.addresses;
+        this.worksPerformed = factory.worksPerformed;
     }
 
     public Map<Long, Organization> getOrganizations() {
@@ -51,6 +56,18 @@ public class Builder {
         return templates;
     }
 
+    public Map<Long, ReportingDocument> getReportingDocuments() {
+        return reportingDocuments;
+    }
+
+    public Map<Long, Address> getAddresses() {
+        return addresses;
+    }
+
+    public Map<Long, WorkPerformed> getWorksPerformed() {
+        return worksPerformed;
+    }
+
     public static class DataBuilder {
 
         private Map<Long, Organization> organizations;
@@ -60,6 +77,9 @@ public class Builder {
         private Map<Long, ObjectsType> objectsTypes;
         private Map<Long, Objects> objects;
         private Map<Long, ObjectPassportDataTemplate> templates;
+        private Map<Long, ReportingDocument> reportingDocuments;
+        private Map<Long, Address> addresses;
+        private Map<Long, WorkPerformed> worksPerformed;
 
         public DataBuilder organizations(Map<Long, Organization> organizations) {
             this.organizations = organizations;
@@ -93,6 +113,21 @@ public class Builder {
 
         public DataBuilder templates(Map<Long, ObjectPassportDataTemplate> templates) {
             this.templates = templates;
+            return this;
+        }
+
+        public DataBuilder reportingDocuments(Map<Long, ReportingDocument> reportingDocuments) {
+            this.reportingDocuments = reportingDocuments;
+            return this;
+        }
+
+        public DataBuilder addresses(Map<Long, Address> addresses) {
+            this.addresses = addresses;
+            return this;
+        }
+
+        public DataBuilder worksPerformed(Map<Long, WorkPerformed> worksPerformed) {
+            this.worksPerformed = worksPerformed;
             return this;
         }
 
